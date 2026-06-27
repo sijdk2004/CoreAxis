@@ -104,6 +104,8 @@ class _GradientKpiCardState extends State<GradientKpiCard> {
                 Flexible(
                   child: Text(
                     widget.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: Colors.white70,
                       fontWeight: FontWeight.w600,
@@ -157,6 +159,7 @@ class _GradientKpiCardState extends State<GradientKpiCard> {
                   Flexible(
                     child: Text(
                       widget.subtitle,
+                      maxLines: 1,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 11,

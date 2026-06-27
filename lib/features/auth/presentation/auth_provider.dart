@@ -42,18 +42,29 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> login(String username, String password, String tenantId) async {
     state = AuthState(status: AuthStateStatus.loading);
     try {
-      final response = await _authRepository.login(username, password, tenantId);
+      // Mock login to skip backend request
+      await Future.delayed(const Duration(milliseconds: 800));
+      
+      final mockPermissions = [
+        'view_dashboard', 
+        'manage_users', 
+        'manage_roles', 
+        'view_reports', 
+        'manage_workflows',
+        'manage_sales_orders',
+        'manage_production_orders',
+      ];
       
       // Save tokens
       await _secureStorage.saveTokens(
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
+        accessToken: 'mock_access_token_${DateTime.now().millisecondsSinceEpoch}',
+        refreshToken: 'mock_refresh_token',
       );
       await _secureStorage.saveTenantAndOrg(tenantId: tenantId, orgId: 'default');
       
       // Update RBAC state and save to storage
-      ref.read(rbacProvider.notifier).setPermissions(response.permissions);
-      await _secureStorage.savePermissions(response.permissions);
+      ref.read(rbacProvider.notifier).setPermissions(mockPermissions);
+      await _secureStorage.savePermissions(mockPermissions);
       
       state = AuthState(status: AuthStateStatus.authenticated);
     } catch (e) {

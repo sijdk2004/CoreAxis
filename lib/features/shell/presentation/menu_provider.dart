@@ -41,6 +41,7 @@ class MenuItem {
     else if (screenCode == 'TRK_BOARD') routePath = '/tracking/board';
     else if (screenCode == 'TRK_LIST') routePath = '/tracking';
     else if (screenCode == 'DLV_LIST') routePath = '/delivery';
+    else if (screenCode == 'SLS_DSH') routePath = '/sales-dashboard';
     else if (screenCode != null) routePath = '/${screenCode.toLowerCase()}';
 
     return MenuItem(
@@ -65,6 +66,9 @@ class MenuNotifier extends Notifier<List<MenuItem>> {
 
     // Fallback for POC modules not yet in DB
     if (permissions.contains('PLATFORM_ADMIN') || permissions.contains('DSH.DSH_HOME.VIEW')) {
+      filteredMenus.add(MenuItem(title: 'CEO Dashboard', route: '/dashboard', icon: 'pieChart', group: MenuItem._determineGroup('/dashboard')));
+    }
+    if (permissions.contains('PLATFORM_ADMIN') || permissions.contains('SLS.SLS_DSH.VIEW')) {
       filteredMenus.add(MenuItem(title: 'Sales Dashboard', route: '/sales-dashboard', icon: 'barChart', group: MenuItem._determineGroup('/sales-dashboard')));
     }
     if (permissions.contains('PLATFORM_ADMIN') || permissions.contains('SYS.MASTER_DATA.VIEW')) {
@@ -92,7 +96,9 @@ class MenuNotifier extends Notifier<List<MenuItem>> {
       for (var menu in allMenus) {
         if (permissions.contains('PLATFORM_ADMIN') || 
            (menu.permissionCode != null && permissions.contains('${menu.permissionCode}.${menu.permissionCode}_LIST.VIEW'))) {
-          filteredMenus.add(menu);
+          if (!filteredMenus.any((m) => m.route == menu.route)) {
+            filteredMenus.add(menu);
+          }
         }
       }
     } catch (e) {

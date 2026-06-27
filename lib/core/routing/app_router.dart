@@ -10,6 +10,7 @@ import '../../features/dashboard/presentation/manufacturing_dashboard_screen.dar
 import '../../features/dashboard/presentation/delivery_dashboard_screen.dart';
 import '../../features/catalog/presentation/catalog_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
+import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/customers/presentation/customers_screen.dart';
 import '../../features/inquiries/presentation/inquiries_screen.dart';
 import '../../features/quotations/presentation/quotations_screen.dart';
@@ -56,8 +57,27 @@ import '../../features/catalog/presentation/product_view_screen.dart';
 import '../../features/auth/presentation/auth_provider.dart';
 // Placeholder for missing screens
 
+import '../../features/platform_shell/presentation/platform_shell.dart';
+import '../../features/platform/presentation/platform_dashboard_screen.dart';
+import '../../features/platform/presentation/tenants_screen.dart';
+import '../../features/platform/presentation/organizations_screen.dart';
+import '../../features/platform/presentation/platform_users_screen.dart';
+import '../../features/platform/presentation/roles_permissions_screen.dart';
+import '../../features/platform/presentation/workflow_engine_screen.dart';
+import '../../features/platform/presentation/approval_engine_screen.dart';
+import '../../features/platform/presentation/platform_notifications_screen.dart';
+import '../../features/platform/presentation/documents_screen.dart';
+import '../../features/platform/presentation/audit_logs_screen.dart';
+import '../../features/platform/presentation/platform_reports_screen.dart';
+import '../../features/platform/presentation/ai_assistant_screen.dart';
+import '../../features/platform/presentation/furni_flow_pack_screen.dart';
+import '../../features/platform/presentation/steel_flow_pack_screen.dart';
+import '../../features/platform/presentation/garment_flow_pack_screen.dart';
+import '../../features/platform/presentation/kitchen_flow_pack_screen.dart';
+
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
+final _platformShellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'platformShell');
 
 class RouterNotifier extends ChangeNotifier {
   final Ref _ref;
@@ -83,7 +103,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final isAuth = authState.status == AuthStateStatus.authenticated;
-      final isGoingToLogin = state.matchedLocation == '/login';
+      final isGoingToAuth = state.matchedLocation == '/login' || state.matchedLocation == '/forgot-password';
 
       if (authState.status == AuthStateStatus.initial) {
         return null; // wait for initial state check
@@ -93,11 +113,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         return isAuth ? '/dashboard' : '/login';
       }
 
-      if (!isAuth && !isGoingToLogin) {
+      if (!isAuth && !isGoingToAuth) {
         return '/login';
       }
-      if (isAuth && isGoingToLogin) {
-        return '/dashboard';
+      if (isAuth && isGoingToAuth) {
+        return null; // Let the login screen handle specific app routing
       }
       return null;
     },
@@ -107,8 +127,36 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
+        path: '/forgot-password',
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
         path: '/',
         redirect: (context, state) => '/dashboard',
+      ),
+      ShellRoute(
+        navigatorKey: _platformShellNavigatorKey,
+        builder: (context, state, child) {
+          return PlatformShell(child: child);
+        },
+        routes: [
+          GoRoute(path: '/platform/dashboard', builder: (context, state) => const PlatformDashboardScreen()),
+          GoRoute(path: '/platform/tenants', builder: (context, state) => const TenantsScreen()),
+          GoRoute(path: '/platform/organizations', builder: (context, state) => const OrganizationsScreen()),
+          GoRoute(path: '/platform/users', builder: (context, state) => const PlatformUsersScreen()),
+          GoRoute(path: '/platform/roles', builder: (context, state) => const RolesPermissionsScreen()),
+          GoRoute(path: '/platform/workflows', builder: (context, state) => const WorkflowEngineScreen()),
+          GoRoute(path: '/platform/approvals', builder: (context, state) => const ApprovalEngineScreen()),
+          GoRoute(path: '/platform/notifications', builder: (context, state) => const PlatformNotificationsScreen()),
+          GoRoute(path: '/platform/documents', builder: (context, state) => const DocumentsScreen()),
+          GoRoute(path: '/platform/audit-logs', builder: (context, state) => const AuditLogsScreen()),
+          GoRoute(path: '/platform/reports', builder: (context, state) => const PlatformReportsScreen()),
+          GoRoute(path: '/platform/ai', builder: (context, state) => const AiAssistantScreen()),
+          GoRoute(path: '/platform/pack/furniflow', builder: (context, state) => const FurniFlowPackScreen()),
+          GoRoute(path: '/platform/pack/steelflow', builder: (context, state) => const SteelFlowPackScreen()),
+          GoRoute(path: '/platform/pack/garmentflow', builder: (context, state) => const GarmentFlowPackScreen()),
+          GoRoute(path: '/platform/pack/kitchenflow', builder: (context, state) => const KitchenFlowPackScreen()),
+        ],
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,

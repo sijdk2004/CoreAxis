@@ -178,9 +178,10 @@ class _MasterDataScreenState extends ConsumerState<MasterDataScreen> {
       body: Row(
         children: [
           // Left Sidebar (Master Types)
-          Container(
-            width: 250,
+          Material(
             color: theme.colorScheme.surface,
+            child: SizedBox(
+              width: 250,
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: 24),
               children: [
@@ -217,6 +218,7 @@ class _MasterDataScreenState extends ConsumerState<MasterDataScreen> {
                 }),
               ],
             ),
+            ),
           ),
           const VerticalDivider(width: 1, thickness: 1),
           // Right Main Area
@@ -230,14 +232,17 @@ class _MasterDataScreenState extends ConsumerState<MasterDataScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(selectedLabel, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 4),
-                          Text('Manage reference data for $selectedLabel', style: theme.textTheme.bodyMedium),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(selectedLabel, style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 4),
+                            Text('Manage reference data for $selectedLabel', style: theme.textTheme.bodyMedium),
+                          ],
+                        ),
                       ),
+                      const SizedBox(width: 16),
                       ElevatedButton.icon(
                         onPressed: _showAddEditDialog,
                         icon: const Icon(LucideIcons.plus, size: 18),

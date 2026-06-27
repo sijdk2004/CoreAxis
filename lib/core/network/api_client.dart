@@ -3,6 +3,7 @@ import '../config/env_config.dart';
 // Removed network_exceptions
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/error_interceptor.dart';
+import 'interceptors/mock_data_interceptor.dart';
 
 class ApiClient {
   final Dio _dio;
@@ -20,9 +21,9 @@ class ApiClient {
 
     _dio.interceptors.clear();
     _dio.interceptors.addAll([
+      MockDataInterceptor(), // <-- MOCK DATA INJECTED HERE
       authInterceptor,
       errorInterceptor,
-      LogInterceptor(requestBody: true, responseBody: true),
     ]);
   }
 

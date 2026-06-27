@@ -397,7 +397,7 @@ class _DeliveryDashboardScreenState extends ConsumerState<DeliveryDashboardScree
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Upcoming Deliveries', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Upcoming Deliveries', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
                 TextButton(onPressed: () => context.go('/delivery?status=Scheduled'), child: const Text('View All')),
               ],
             ),
@@ -445,7 +445,7 @@ class _DeliveryDashboardScreenState extends ConsumerState<DeliveryDashboardScree
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Delayed Deliveries', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Delayed Deliveries', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
                 TextButton(onPressed: () => context.go('/delivery'), child: const Text('View All')),
               ],
             ),
@@ -493,7 +493,7 @@ class _DeliveryDashboardScreenState extends ConsumerState<DeliveryDashboardScree
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Pending Acknowledgements', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Pending Acknowledgements', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
               ],
             ),
             const SizedBox(height: 16),
@@ -534,7 +534,7 @@ class _DeliveryDashboardScreenState extends ConsumerState<DeliveryDashboardScree
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Recently Delivered', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Recently Delivered', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
                 TextButton(onPressed: () => context.go('/delivery?status=Delivered'), child: const Text('View All')),
               ],
             ),

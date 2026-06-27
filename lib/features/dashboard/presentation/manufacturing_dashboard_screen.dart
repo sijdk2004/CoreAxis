@@ -378,7 +378,7 @@ class _ManufacturingDashboardScreenState extends ConsumerState<ManufacturingDash
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Production Stage Analytics', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+              Expanded(child: Text('Production Stage Analytics', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
             ],
           ),
           const SizedBox(height: 16),
@@ -435,7 +435,7 @@ class _ManufacturingDashboardScreenState extends ConsumerState<ManufacturingDash
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Current Production Queue', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Current Production Queue', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
                 TextButton(onPressed: () => context.go('/production?status=In Progress'), child: const Text('View All')),
               ],
             ),
@@ -484,7 +484,7 @@ class _ManufacturingDashboardScreenState extends ConsumerState<ManufacturingDash
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Orders On Hold', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Orders On Hold', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
                 TextButton(onPressed: () => context.go('/production?status=On Hold'), child: const Text('View All')),
               ],
             ),

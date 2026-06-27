@@ -365,7 +365,7 @@ class _SalesDashboardScreenState extends ConsumerState<SalesDashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Recent Orders', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Recent Orders', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
                 TextButton(onPressed: () => context.go('/sales-orders'), child: const Text('View All')),
               ],
             ),
@@ -414,7 +414,7 @@ class _SalesDashboardScreenState extends ConsumerState<SalesDashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Recent Quotations', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                Expanded(child: Text('Recent Quotations', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800), overflow: TextOverflow.ellipsis)),
                 TextButton(onPressed: () => context.go('/quotations'), child: const Text('View All')),
               ],
             ),

@@ -3,35 +3,74 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:collection/collection.dart';
 import '../../../../main.dart';
 import '../../notifications/presentation/notification_drawer.dart';
 import '../../ai_assistant/presentation/ai_assistant_panel.dart';
 import '../../auth/presentation/auth_provider.dart';
-import '../presentation/menu_provider.dart';
 
-class AppShell extends ConsumerStatefulWidget {
+class PlatformShell extends ConsumerStatefulWidget {
   final Widget child;
 
-  const AppShell({super.key, required this.child});
+  const PlatformShell({super.key, required this.child});
 
   @override
-  ConsumerState<AppShell> createState() => _AppShellState();
+  ConsumerState<PlatformShell> createState() => _PlatformShellState();
 }
 
-class _AppShellState extends ConsumerState<AppShell> {
+class _PlatformShellState extends ConsumerState<PlatformShell> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Widget? _currentEndDrawer;
   
   final Map<String, bool> _expandedGroups = {};
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(menuProvider.notifier).loadMenusForRole();
-    });
-  }
+  final _menuHierarchy = [
+    {
+      'group': 'Main',
+      'items': [
+        {'title': 'Dashboard', 'icon': LucideIcons.layoutDashboard, 'route': '/platform/dashboard'},
+      ]
+    },
+    {
+      'group': 'Platform Administration',
+      'items': [
+        {'title': 'Tenants', 'icon': LucideIcons.building, 'route': '/platform/tenants'},
+        {'title': 'Organizations', 'icon': LucideIcons.network, 'route': '/platform/organizations'},
+        {'title': 'Users', 'icon': LucideIcons.users, 'route': '/platform/users'},
+        {'title': 'Roles & Permissions', 'icon': LucideIcons.shieldCheck, 'route': '/platform/roles'},
+      ]
+    },
+    {
+      'group': 'Workflow & Automation',
+      'items': [
+        {'title': 'Workflow Engine', 'icon': LucideIcons.gitMerge, 'route': '/platform/workflows'},
+        {'title': 'Approval Engine', 'icon': LucideIcons.checkSquare, 'route': '/platform/approvals'},
+        {'title': 'Notifications', 'icon': LucideIcons.bellRing, 'route': '/platform/notifications'},
+      ]
+    },
+    {
+      'group': 'Content & Documents',
+      'items': [
+        {'title': 'Documents', 'icon': LucideIcons.fileText, 'route': '/platform/documents'},
+        {'title': 'Audit Logs', 'icon': LucideIcons.history, 'route': '/platform/audit-logs'},
+      ]
+    },
+    {
+      'group': 'Analytics',
+      'items': [
+        {'title': 'Reports', 'icon': LucideIcons.pieChart, 'route': '/platform/reports'},
+        {'title': 'AI Assistant', 'icon': LucideIcons.sparkles, 'route': '/platform/ai'},
+      ]
+    },
+    {
+      'group': 'Industry Packs',
+      'items': [
+        {'title': 'FurniFlow', 'icon': LucideIcons.sofa, 'route': '/platform/pack/furniflow'},
+        {'title': 'SteelFlow', 'icon': LucideIcons.anvil, 'route': '/platform/pack/steelflow'},
+        {'title': 'GarmentFlow', 'icon': LucideIcons.shirt, 'route': '/platform/pack/garmentflow'},
+        {'title': 'KitchenFlow', 'icon': LucideIcons.chefHat, 'route': '/platform/pack/kitchenflow'},
+      ]
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +87,7 @@ class _AppShellState extends ConsumerState<AppShell> {
                 icon: const Icon(LucideIcons.menu),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
-              title: const Text('FurniFlow'),
+              title: const Text('CoreAxis ERP'),
               actions: _buildAppBarActions(),
             ),
       drawer: isDesktop ? null : _buildDrawer(context, theme),
@@ -59,6 +98,7 @@ class _AppShellState extends ConsumerState<AppShell> {
           Expanded(
             child: Column(
               children: [
+                _buildBreadcrumbs(context, theme),
                 Expanded(child: widget.child),
               ],
             ),
@@ -79,23 +119,29 @@ class _AppShellState extends ConsumerState<AppShell> {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Row(
           children: [
-            Text(
-              'FurniFlow',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
-              ),
+            Row(
+              children: [
+                Icon(LucideIcons.boxes, color: theme.colorScheme.primary),
+                const SizedBox(width: 12),
+                Text(
+                  'CoreAxis ERP',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(width: 48),
             // Global Search
             Expanded(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 400),
+                constraints: const BoxConstraints(maxWidth: 500),
                 child: TextField(
                   readOnly: true,
                   onTap: () => _showCommandPaletteDialog(context),
                   decoration: InputDecoration(
-                    hintText: 'Search anywhere (Cmd+K)...',
+                    hintText: 'Search platform (Cmd+K)...',
                     prefixIcon: const Icon(LucideIcons.search, size: 20),
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -138,19 +184,45 @@ class _AppShellState extends ConsumerState<AppShell> {
       ),
       const SizedBox(width: 8),
       IconButton(
-        icon: const Icon(LucideIcons.sparkles, color: Colors.purple),
-        tooltip: 'FurniFlow AI',
-        onPressed: () {
-          setState(() => _currentEndDrawer = AiAssistantPanel(onClose: () => _scaffoldKey.currentState?.closeEndDrawer()));
-          _scaffoldKey.currentState?.openEndDrawer();
-        },
-      ),
-      const SizedBox(width: 8),
-      IconButton(
         icon: const Icon(LucideIcons.user),
         onPressed: () => _showProfileDialog(context),
       ),
     ];
+  }
+
+  Widget _buildBreadcrumbs(BuildContext context, ThemeData theme) {
+    final path = GoRouterState.of(context).uri.path;
+    final segments = path.split('/').where((s) => s.isNotEmpty && s != 'platform').toList();
+    
+    if (segments.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        border: Border(bottom: BorderSide(color: theme.dividerColor.withOpacity(0.5))),
+      ),
+      child: Row(
+        children: [
+          Icon(LucideIcons.home, size: 16, color: theme.colorScheme.onSurfaceVariant),
+          const SizedBox(width: 8),
+          Text('Platform', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          for (var i = 0; i < segments.length; i++) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Icon(LucideIcons.chevronRight, size: 16, color: theme.colorScheme.onSurfaceVariant),
+            ),
+            Text(
+              segments[i].replaceAll('-', ' ').toUpperCase(),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: i == segments.length - 1 ? FontWeight.bold : FontWeight.normal,
+                color: i == segments.length - 1 ? theme.colorScheme.onSurface : theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   Widget _buildDrawer(BuildContext context, ThemeData theme) {
@@ -170,22 +242,7 @@ class _AppShellState extends ConsumerState<AppShell> {
   }
 
   Widget _buildSidebarContent(BuildContext context, ThemeData theme) {
-    final menus = ref.watch(menuProvider);
     final currentPath = GoRouterState.of(context).uri.path;
-
-    // Group the menus by their group property
-    final groupedMenus = groupBy(menus, (MenuItem m) => m.group);
-    
-    // Sort groups according to requirement
-    final groupOrder = ['Dashboards', 'Sales', 'Manufacturing', 'Logistics', 'Administration', 'Other'];
-    final sortedGroups = groupedMenus.keys.toList()
-      ..sort((a, b) {
-        int indexA = groupOrder.indexOf(a);
-        int indexB = groupOrder.indexOf(b);
-        if (indexA == -1) indexA = 999;
-        if (indexB == -1) indexB = 999;
-        return indexA.compareTo(indexB);
-      });
 
     return Column(
       children: [
@@ -194,19 +251,18 @@ class _AppShellState extends ConsumerState<AppShell> {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
-              _buildSectionTitle('MAIN MENU'),
-              for (final group in sortedGroups)
-                _buildMenuGroup(context, theme, group, groupedMenus[group]!, currentPath),
+              for (final group in _menuHierarchy)
+                _buildMenuGroup(context, theme, group['group'] as String, group['items'] as List<Map<String, dynamic>>, currentPath),
             ],
           ),
         ),
         const Divider(),
-        _buildNavItem(context, 'Settings', LucideIcons.settings, '/settings', currentPath),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: ListTile(
             leading: const Icon(LucideIcons.logOut, color: Colors.red),
             title: const Text('Sign Out', style: TextStyle(color: Colors.red)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             onTap: () {
               ref.read(authProvider.notifier).logout();
               context.go('/login');
@@ -217,25 +273,15 @@ class _AppShellState extends ConsumerState<AppShell> {
     );
   }
 
-  IconData _getGroupIcon(String groupName) {
-    switch (groupName) {
-      case 'Dashboards': return LucideIcons.layoutDashboard;
-      case 'Sales': return LucideIcons.briefcase;
-      case 'Manufacturing': return LucideIcons.factory;
-      case 'Logistics': return LucideIcons.truck;
-      case 'Administration': return LucideIcons.settings;
-      default: return LucideIcons.layers;
+  Widget _buildMenuGroup(BuildContext context, ThemeData theme, String groupName, List<Map<String, dynamic>> items, String currentPath) {
+    final hasActiveChild = items.any((m) => currentPath == m['route'] || currentPath.startsWith(m['route'] + '/'));
+
+    if (groupName == 'Main') {
+      return Column(
+        children: items.map((m) => _buildNavItem(context, m['title'], m['icon'], m['route'], currentPath)).toList(),
+      );
     }
-  }
 
-  Widget _buildMenuGroup(BuildContext context, ThemeData theme, String groupName, List<MenuItem> items, String currentPath) {
-    // Check if any child is currently active
-    final hasActiveChild = items.any((m) {
-      final path = m.route;
-      return currentPath == path || (path != '/' && currentPath.startsWith(path) && !currentPath.startsWith('\$path/'));
-    });
-
-    // If active and not explicitly collapsed, auto-expand it
     if (hasActiveChild && !_expandedGroups.containsKey(groupName)) {
       _expandedGroups[groupName] = true;
     }
@@ -251,7 +297,7 @@ class _AppShellState extends ConsumerState<AppShell> {
             _expandedGroups[groupName] = expanded;
           });
         },
-        leading: Icon(_getGroupIcon(groupName), color: hasActiveChild ? theme.colorScheme.primary : theme.iconTheme.color, size: 20),
+        leading: Icon(LucideIcons.layers, color: hasActiveChild ? theme.colorScheme.primary : theme.iconTheme.color, size: 20),
         title: Text(
           groupName,
           style: theme.textTheme.bodyMedium?.copyWith(
@@ -261,45 +307,13 @@ class _AppShellState extends ConsumerState<AppShell> {
         ),
         tilePadding: const EdgeInsets.symmetric(horizontal: 12),
         childrenPadding: const EdgeInsets.only(left: 24),
-        children: items.map((m) => _buildNavItem(context, m.title, _getIcon(m.icon), m.route, currentPath)).toList(),
-      ),
-    );
-  }
-
-  IconData _getIcon(String iconName) {
-    switch (iconName) {
-      case 'dashboard': return LucideIcons.layoutDashboard;
-      case 'barChart': return LucideIcons.barChart2;
-      case 'business': return LucideIcons.building2;
-      case 'settings': return LucideIcons.settings;
-      case 'users': return LucideIcons.users;
-      case 'box': return LucideIcons.box;
-      case 'truck': return LucideIcons.truck;
-      case 'factory': return LucideIcons.factory;
-      default: return LucideIcons.circle;
-    }
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 12, top: 16, bottom: 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.2,
-        ),
+        children: items.map((m) => _buildNavItem(context, m['title'], m['icon'], m['route'], currentPath)).toList(),
       ),
     );
   }
 
   Widget _buildNavItem(BuildContext context, String title, IconData icon, String path, String currentPath) {
-    // Exact match OR the current path starts with this path AND no longer/more-specific menu item matches.
-    // We use exact match first; fall back to prefix only when path is NOT a prefix of another menu item
-    // that is itself selected. This prevents /tracking matching when /tracking/board is active.
-    final isSelected = currentPath == path ||
-        (path != '/' && currentPath.startsWith(path) && !currentPath.startsWith('$path/'));
+    final isSelected = currentPath == path || (currentPath.startsWith(path) && !currentPath.startsWith('$path/'));
     final theme = Theme.of(context);
 
     return Padding(
@@ -336,78 +350,19 @@ class _AppShellState extends ConsumerState<AppShell> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircleAvatar(radius: 40, backgroundColor: Colors.blue, child: Text('SA', style: TextStyle(fontSize: 24, color: Colors.white))),
+              const CircleAvatar(radius: 40, backgroundColor: Colors.indigo, child: Text('CA', style: TextStyle(fontSize: 24, color: Colors.white))),
               const SizedBox(height: 16),
               const Text('System Administrator', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const Text('admin@furniflow.com', style: TextStyle(color: Colors.grey)),
+              const Text('admin@coreaxis.com', style: TextStyle(color: Colors.grey)),
               const Divider(height: 32),
-              const ListTile(leading: Icon(LucideIcons.building), title: Text('Department'), subtitle: Text('IT Operations')),
-              const ListTile(leading: Icon(LucideIcons.mapPin), title: Text('Location'), subtitle: Text('Headquarters - Block A')),
+              const ListTile(leading: Icon(LucideIcons.building), title: Text('Tenant'), subtitle: Text('SYSTEM_TENANT')),
+              const ListTile(leading: Icon(LucideIcons.shieldCheck), title: Text('Role'), subtitle: Text('Platform Admin')),
             ],
           ),
         ),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
-          ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('Edit Profile')),
-        ],
-      ),
-    );
-  }
-
-  void _showSettingsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('System Settings'),
-        content: SizedBox(
-          width: 500,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Consumer(
-                builder: (context, ref, child) {
-                  final isDarkMode = ref.watch(themeModeProvider) == ThemeMode.dark;
-                  return SwitchListTile(
-                    title: const Text('Dark Mode'),
-                    subtitle: const Text('Toggle dark/light theme'),
-                    value: isDarkMode,
-                    onChanged: (val) {
-                      ref.read(themeModeProvider.notifier).toggle(val);
-                    },
-                  );
-                },
-              ),
-              SwitchListTile(
-                title: const Text('Push Notifications'),
-                subtitle: const Text('Receive alerts for order updates'),
-                value: true,
-                onChanged: (val) {},
-              ),
-              SwitchListTile(
-                title: const Text('Email Summaries'),
-                subtitle: const Text('Daily digest of production metrics'),
-                value: true,
-                onChanged: (val) {},
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(LucideIcons.globe),
-                title: const Text('Language'),
-                trailing: const Text('English (US)'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(LucideIcons.shield),
-                title: const Text('Security & Privacy'),
-                trailing: const Icon(LucideIcons.chevronRight),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
-          ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('Save Changes')),
+          ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('Settings')),
         ],
       ),
     );
@@ -442,7 +397,7 @@ class _AppShellState extends ConsumerState<AppShell> {
                 child: TextField(
                   autofocus: true,
                   decoration: InputDecoration(
-                    hintText: 'Search commands, orders, customers...',
+                    hintText: 'Search tenants, users, workflows...',
                     prefixIcon: const Icon(LucideIcons.search, size: 24),
                     border: InputBorder.none,
                     isDense: true,
@@ -457,17 +412,14 @@ class _AppShellState extends ConsumerState<AppShell> {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   children: [
                     _buildCommandSection('QUICK ACTIONS', theme),
-                    _buildCommandItem(LucideIcons.plusCircle, 'Create New Sales Order', 'Sales > New', theme, context),
-                    _buildCommandItem(LucideIcons.fileSignature, 'Approve Q1 Discount Request', 'Approvals', theme, context, isHighlight: true),
-                    _buildCommandItem(LucideIcons.truck, 'View Delayed Deliveries', 'Logistics', theme, context),
+                    _buildCommandItem(LucideIcons.building, 'Create New Tenant', 'Administration', theme, context),
+                    _buildCommandItem(LucideIcons.users, 'Invite New User', 'Administration', theme, context),
                     
-                    _buildCommandSection('RECENT SEARCHES', theme),
-                    _buildCommandItem(LucideIcons.history, 'ORD-1042', 'Order', theme, context),
-                    _buildCommandItem(LucideIcons.history, 'Acme Corp', 'Customer', theme, context),
+                    _buildCommandSection('RECENT', theme),
+                    _buildCommandItem(LucideIcons.gitMerge, 'Purchase Order Approval Flow', 'Workflow', theme, context),
                     
-                    _buildCommandSection('SUGGESTED ANALYTICS', theme),
-                    _buildCommandItem(LucideIcons.barChart3, 'Show Q3 Revenue Forecast', 'AI Suggestion', theme, context),
-                    _buildCommandItem(LucideIcons.pieChart, 'Inventory Valuation by Category', 'Report', theme, context),
+                    _buildCommandSection('SUGGESTED', theme),
+                    _buildCommandItem(LucideIcons.pieChart, 'Platform Usage Analytics', 'Report', theme, context),
                   ],
                 ),
               ),
