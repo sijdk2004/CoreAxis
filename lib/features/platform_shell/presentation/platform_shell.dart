@@ -28,6 +28,7 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
       'group': 'Main',
       'items': [
         {'title': 'Dashboard', 'icon': LucideIcons.layoutDashboard, 'route': '/platform/dashboard'},
+        {'title': 'Operations', 'icon': LucideIcons.activity, 'route': '/platform/dashboard/operations'},
       ]
     },
     {
@@ -36,7 +37,13 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
         {'title': 'Tenants', 'icon': LucideIcons.building, 'route': '/platform/tenants'},
         {'title': 'Organizations', 'icon': LucideIcons.network, 'route': '/platform/organizations'},
         {'title': 'Users', 'icon': LucideIcons.users, 'route': '/platform/users'},
-        {'title': 'Roles & Permissions', 'icon': LucideIcons.shieldCheck, 'route': '/platform/roles'},
+        {'title': 'Roles', 'icon': LucideIcons.shieldCheck, 'route': '/platform/rbac/roles'},
+        {'title': 'Permissions', 'icon': LucideIcons.key, 'route': '/platform/rbac/permissions'},
+        {'title': 'Permission Groups', 'icon': LucideIcons.folders, 'route': '/platform/rbac/permission-groups'},
+        {'title': 'Permission Matrix', 'icon': LucideIcons.grid, 'route': '/platform/rbac/matrix'},
+        {'title': 'User Role Assignment', 'icon': LucideIcons.userCog, 'route': '/platform/rbac/user-role-assignment'},
+        {'title': 'Permission Simulator', 'icon': LucideIcons.flaskConical, 'route': '/platform/rbac/simulator'},
+        {'title': 'Access Policies', 'icon': LucideIcons.gitCommit, 'route': '/platform/rbac/policies'},
       ]
     },
     {
@@ -58,6 +65,7 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
       'group': 'Analytics',
       'items': [
         {'title': 'Reports', 'icon': LucideIcons.pieChart, 'route': '/platform/reports'},
+        {'title': 'AI Insights', 'icon': LucideIcons.brain, 'route': '/platform/dashboard/ai-insights'},
         {'title': 'AI Assistant', 'icon': LucideIcons.sparkles, 'route': '/platform/ai'},
       ]
     },

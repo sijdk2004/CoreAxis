@@ -42,7 +42,7 @@ class FurniFlowApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
-      title: 'FurniFlow ERP',
+      title: 'CoreAxis ERP',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

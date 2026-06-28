@@ -7,7 +7,7 @@ import 'package:furniflow/core/network/interceptors/error_interceptor.dart';
 import 'package:furniflow/core/local_storage/secure_storage_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class MockDio extends DioForNative {
+class MockDio extends Fake implements Dio {
   bool shouldFail = false;
 
   @override

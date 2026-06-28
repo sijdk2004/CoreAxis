@@ -58,11 +58,39 @@ import '../../features/auth/presentation/auth_provider.dart';
 // Placeholder for missing screens
 
 import '../../features/platform_shell/presentation/platform_shell.dart';
+import '../../features/platform/presentation/organizations_screen.dart';
+import '../../features/platform/presentation/create_organization_screen.dart';
+import '../../features/platform/presentation/organization_detail_screen.dart';
+import '../../features/platform/presentation/branch_management_screen.dart';
+import '../../features/platform/presentation/department_management_screen.dart';
+import '../../features/platform/presentation/organization_analytics_screen.dart';
 import '../../features/platform/presentation/platform_dashboard_screen.dart';
+import '../../features/platform/presentation/operations_dashboard_screen.dart';
+import '../../features/platform/presentation/ai_insights_dashboard_screen.dart';
 import '../../features/platform/presentation/tenants_screen.dart';
+import '../../features/platform/presentation/create_tenant_screen.dart';
+import '../../features/platform/presentation/tenant_detail_screen.dart';
+import '../../features/platform/presentation/tenant_analytics_screen.dart';
+import '../../features/platform/presentation/tenant_settings_screen.dart';
+import '../../features/platform/presentation/subscription_screen.dart';
 import '../../features/platform/presentation/organizations_screen.dart';
 import '../../features/platform/presentation/platform_users_screen.dart';
+import '../../features/platform/presentation/create_user_screen.dart';
+import '../../features/platform/presentation/user_detail_screen.dart';
+import '../../features/platform/presentation/user_activity_screen.dart';
+import '../../features/platform/presentation/user_profile_screen.dart';
+import '../../features/platform/presentation/user_sessions_screen.dart';
+import '../../features/platform/presentation/user_invitations_screen.dart';
 import '../../features/platform/presentation/roles_permissions_screen.dart';
+import '../../features/platform/presentation/roles_screen.dart' as platform_roles;
+import '../../features/platform/presentation/role_form_screen.dart';
+import '../../features/platform/presentation/role_detail_screen.dart';
+import '../../features/platform/presentation/permissions_screen.dart';
+import '../../features/platform/presentation/role_permission_matrix_screen.dart';
+import '../../features/platform/presentation/user_role_assignment_screen.dart';
+import '../../features/platform/presentation/permission_groups_screen.dart';
+import '../../features/platform/presentation/permission_simulator_screen.dart';
+import '../../features/platform/presentation/access_policy_viewer_screen.dart';
 import '../../features/platform/presentation/workflow_engine_screen.dart';
 import '../../features/platform/presentation/approval_engine_screen.dart';
 import '../../features/platform/presentation/platform_notifications_screen.dart';
@@ -141,7 +169,125 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         },
         routes: [
           GoRoute(path: '/platform/dashboard', builder: (context, state) => const PlatformDashboardScreen()),
+          GoRoute(path: '/platform/dashboard/operations', builder: (context, state) => const OperationsDashboardScreen()),
+          GoRoute(path: '/platform/dashboard/ai-insights', builder: (context, state) => const AiInsightsDashboardScreen()),
           GoRoute(path: '/platform/tenants', builder: (context, state) => const TenantsScreen()),
+          GoRoute(path: '/platform/organizations', builder: (context, state) => const OrganizationsScreen()),
+          GoRoute(path: '/platform/rbac/roles', builder: (context, state) => const platform_roles.RolesScreen()),
+          GoRoute(path: '/platform/rbac/roles/new', builder: (context, state) => const RoleFormScreen(roleId: 'new')),
+          GoRoute(
+            path: '/platform/rbac/roles/:id/edit', 
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return RoleFormScreen(roleId: id);
+            },
+          ),
+          GoRoute(
+            path: '/platform/rbac/roles/:id', 
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return RoleDetailScreen(roleId: id);
+            },
+          ),
+          GoRoute(path: '/platform/rbac/permissions', builder: (context, state) => const PermissionsScreen()),
+          GoRoute(path: '/platform/rbac/matrix', builder: (context, state) => const RolePermissionMatrixScreen()),
+          GoRoute(path: '/platform/rbac/user-role-assignment', builder: (context, state) => const UserRoleAssignmentScreen()),
+          GoRoute(path: '/platform/rbac/permission-groups', builder: (context, state) => const PermissionGroupsScreen()),
+          GoRoute(path: '/platform/rbac/simulator', builder: (context, state) => const PermissionSimulatorScreen()),
+          GoRoute(path: '/platform/rbac/policies', builder: (context, state) => const AccessPolicyViewerScreen()),
+          GoRoute(path: '/platform/users', builder: (context, state) => const PlatformUsersScreen()),
+          GoRoute(path: '/platform/users/new', builder: (context, state) => const CreateUserScreen()),
+          GoRoute(path: '/platform/users/invitations', builder: (context, state) => const UserInvitationsScreen()),
+          GoRoute(
+            path: '/platform/users/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return UserDetailScreen(userId: id);
+            },
+          ),
+          GoRoute(
+            path: '/platform/users/:id/activity',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return UserActivityScreen(userId: id);
+            },
+          ),
+          GoRoute(
+            path: '/platform/users/:id/profile',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return UserProfileScreen(userId: id);
+            },
+          ),
+          GoRoute(
+            path: '/platform/users/:id/sessions',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return UserSessionsScreen(userId: id);
+            },
+          ),
+          GoRoute(path: '/platform/organizations/new', builder: (context, state) => const CreateOrganizationScreen()),
+          GoRoute(
+            path: '/platform/organizations/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return OrganizationDetailScreen(orgId: id);
+            },
+            routes: [
+              GoRoute(
+                path: 'branches',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return BranchManagementScreen(orgId: id);
+                },
+              ),
+              GoRoute(
+                path: 'departments',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return DepartmentManagementScreen(orgId: id);
+                },
+              ),
+              GoRoute(
+                path: 'analytics',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return OrganizationAnalyticsScreen(orgId: id);
+                },
+              ),
+            ],
+          ),
+          GoRoute(path: '/platform/tenants/new', builder: (context, state) => const CreateTenantScreen()),
+          GoRoute(
+            path: '/platform/tenants/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return TenantDetailScreen(tenantId: id);
+            },
+            routes: [
+              GoRoute(
+                path: 'subscription',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return SubscriptionScreen(tenantId: id);
+                },
+              ),
+              GoRoute(
+                path: 'analytics',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return TenantAnalyticsScreen(tenantId: id);
+                },
+              ),
+              GoRoute(
+                path: 'settings',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return TenantSettingsScreen(tenantId: id);
+                },
+              ),
+            ]
+          ),
           GoRoute(path: '/platform/organizations', builder: (context, state) => const OrganizationsScreen()),
           GoRoute(path: '/platform/users', builder: (context, state) => const PlatformUsersScreen()),
           GoRoute(path: '/platform/roles', builder: (context, state) => const RolesPermissionsScreen()),

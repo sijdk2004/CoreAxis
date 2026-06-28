@@ -30,7 +30,7 @@ class MockSecureStorage extends SecureStorageService {
   Future<void> clearAll() async {}
 }
 
-class MockDio extends DioForNative {
+class MockDio extends Fake implements Dio {
   final MockSecureStorage storage;
   MockDio(this.storage);
 
