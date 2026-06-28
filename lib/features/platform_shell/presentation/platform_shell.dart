@@ -23,67 +23,81 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
   
   final Map<String, bool> _expandedGroups = {};
 
-  final _menuHierarchy = [
-    {
-      'group': 'Main',
-      'items': [
-        {'title': 'Dashboard', 'icon': LucideIcons.layoutDashboard, 'route': '/platform/dashboard'},
-        {'title': 'Operations', 'icon': LucideIcons.activity, 'route': '/platform/dashboard/operations'},
-      ]
-    },
-    {
-      'group': 'Platform Administration',
-      'items': [
-        {'title': 'Tenants', 'icon': LucideIcons.building, 'route': '/platform/tenants'},
-        {'title': 'Organizations', 'icon': LucideIcons.network, 'route': '/platform/organizations'},
-        {'title': 'Users', 'icon': LucideIcons.users, 'route': '/platform/users'},
-        {'title': 'Roles', 'icon': LucideIcons.shieldCheck, 'route': '/platform/rbac/roles'},
-        {'title': 'Permissions', 'icon': LucideIcons.key, 'route': '/platform/rbac/permissions'},
-        {'title': 'Permission Groups', 'icon': LucideIcons.folders, 'route': '/platform/rbac/permission-groups'},
-        {'title': 'Permission Matrix', 'icon': LucideIcons.grid, 'route': '/platform/rbac/matrix'},
-        {'title': 'User Role Assignment', 'icon': LucideIcons.userCog, 'route': '/platform/rbac/user-role-assignment'},
-        {'title': 'Permission Simulator', 'icon': LucideIcons.flaskConical, 'route': '/platform/rbac/simulator'},
-        {'title': 'Access Policies', 'icon': LucideIcons.gitCommit, 'route': '/platform/rbac/policies'},
-      ]
-    },
-    {
-      'group': 'Workflow & Automation',
-      'items': [
-        {'title': 'Workflow Engine', 'icon': LucideIcons.gitMerge, 'route': '/platform/workflows'},
-        {'title': 'Approval Engine', 'icon': LucideIcons.checkSquare, 'route': '/platform/approvals'},
-        {'title': 'Notifications', 'icon': LucideIcons.bellRing, 'route': '/platform/notifications'},
-      ]
-    },
-    {
-      'group': 'Content & Documents',
-      'items': [
-        {'title': 'Documents', 'icon': LucideIcons.fileText, 'route': '/platform/documents'},
-        {'title': 'Audit Logs', 'icon': LucideIcons.history, 'route': '/platform/audit-logs'},
-      ]
-    },
-    {
-      'group': 'Analytics',
-      'items': [
-        {'title': 'Reports', 'icon': LucideIcons.pieChart, 'route': '/platform/reports'},
-        {'title': 'AI Insights', 'icon': LucideIcons.brain, 'route': '/platform/dashboard/ai-insights'},
-        {'title': 'AI Assistant', 'icon': LucideIcons.sparkles, 'route': '/platform/ai'},
-      ]
-    },
-    {
-      'group': 'Industry Packs',
-      'items': [
-        {'title': 'FurniFlow', 'icon': LucideIcons.sofa, 'route': '/platform/pack/furniflow'},
-        {'title': 'SteelFlow', 'icon': LucideIcons.anvil, 'route': '/platform/pack/steelflow'},
-        {'title': 'GarmentFlow', 'icon': LucideIcons.shirt, 'route': '/platform/pack/garmentflow'},
-        {'title': 'KitchenFlow', 'icon': LucideIcons.chefHat, 'route': '/platform/pack/kitchenflow'},
-      ]
-    },
-  ];
+
 
   @override
   Widget build(BuildContext context) {
     final isDesktop = ResponsiveBreakpoints.of(context).largerThan(TABLET);
     final theme = Theme.of(context);
+
+    final _menuHierarchy = [
+      {
+        'group': 'Main',
+        'items': [
+          {'title': 'Dashboard', 'icon': LucideIcons.layoutDashboard, 'route': '/platform/dashboard'},
+          {'title': 'Operations', 'icon': LucideIcons.activity, 'route': '/platform/dashboard/operations'},
+        ]
+      },
+      {
+        'group': 'Platform Administration',
+        'items': [
+          {'title': 'Tenants', 'icon': LucideIcons.building, 'route': '/platform/tenants'},
+          {'title': 'Organizations', 'icon': LucideIcons.network, 'route': '/platform/organizations'},
+          {'title': 'Users', 'icon': LucideIcons.users, 'route': '/platform/users'},
+          {'title': 'Roles', 'icon': LucideIcons.shieldCheck, 'route': '/platform/rbac/roles'},
+          {'title': 'Permissions', 'icon': LucideIcons.key, 'route': '/platform/rbac/permissions'},
+          {'title': 'Permission Groups', 'icon': LucideIcons.folders, 'route': '/platform/rbac/permission-groups'},
+          {'title': 'Permission Matrix', 'icon': LucideIcons.grid, 'route': '/platform/rbac/matrix'},
+          {'title': 'User Role Assignment', 'icon': LucideIcons.userCog, 'route': '/platform/rbac/user-role-assignment'},
+          {'title': 'Permission Simulator', 'icon': LucideIcons.flaskConical, 'route': '/platform/rbac/simulator'},
+          {'title': 'Access Policies', 'icon': LucideIcons.gitCommit, 'route': '/platform/rbac/policies'},
+        ]
+      },
+      {
+        'group': 'Workflow & Automation',
+        'items': [
+          {'title': 'Workflows Dashboard', 'icon': LucideIcons.workflow, 'route': '/platform/workflows'},
+          {'title': 'Analytics Dashboard', 'icon': LucideIcons.barChart2, 'route': '/platform/workflows/analytics'},
+          {'title': 'Workflow List', 'icon': LucideIcons.listTree, 'route': '/platform/workflows/list'},
+          {'title': 'Designer', 'icon': LucideIcons.penTool, 'route': '/platform/workflows/designer'},
+          {'title': 'Templates', 'icon': LucideIcons.copy, 'route': '/platform/workflows/templates'},
+          {'title': 'Execution History', 'icon': LucideIcons.history, 'route': '/platform/workflows/executions'},
+          {'title': 'Settings', 'icon': LucideIcons.settings, 'route': '/platform/workflows/settings'},
+        ]
+      },
+      {
+        'group': 'Approval Engine',
+        'items': [
+          {'title': 'Dashboard', 'icon': LucideIcons.checkSquare, 'route': '/platform/approvals'},
+          {'title': 'Pending Approvals', 'icon': LucideIcons.clock, 'route': '/platform/approvals/pending'},
+          {'title': 'Approval Rules', 'icon': LucideIcons.checkCircle, 'route': '/platform/approvals/rules'},
+        ]
+      },
+      {
+        'group': 'Content & Documents',
+        'items': [
+          {'title': 'Documents', 'icon': LucideIcons.fileText, 'route': '/platform/documents'},
+          {'title': 'Audit Logs', 'icon': LucideIcons.history, 'route': '/platform/audit-logs'},
+        ]
+      },
+      {
+        'group': 'Analytics',
+        'items': [
+          {'title': 'Reports', 'icon': LucideIcons.pieChart, 'route': '/platform/reports'},
+          {'title': 'AI Insights', 'icon': LucideIcons.brain, 'route': '/platform/dashboard/ai-insights'},
+          {'title': 'AI Assistant', 'icon': LucideIcons.sparkles, 'route': '/platform/ai'},
+        ]
+      },
+      {
+        'group': 'Industry Packs',
+        'items': [
+          {'title': 'FurniFlow', 'icon': LucideIcons.sofa, 'route': '/platform/pack/furniflow'},
+          {'title': 'SteelFlow', 'icon': LucideIcons.anvil, 'route': '/platform/pack/steelflow'},
+          {'title': 'GarmentFlow', 'icon': LucideIcons.shirt, 'route': '/platform/pack/garmentflow'},
+          {'title': 'KitchenFlow', 'icon': LucideIcons.chefHat, 'route': '/platform/pack/kitchenflow'},
+        ]
+      },
+    ];
 
     return Scaffold(
       key: _scaffoldKey,
@@ -95,13 +109,12 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
                 icon: const Icon(LucideIcons.menu),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
-              title: const Text('CoreAxis ERP'),
-              actions: _buildAppBarActions(),
+              title: const Text('CoreAxis ERP', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-      drawer: isDesktop ? null : _buildDrawer(context, theme),
+      drawer: isDesktop ? null : _buildDrawer(context, theme, _menuHierarchy),
       body: Row(
         children: [
-          if (isDesktop) _buildSidebar(context, theme),
+          if (isDesktop) _buildSidebar(context, theme, _menuHierarchy),
           if (isDesktop) const VerticalDivider(width: 1),
           Expanded(
             child: Column(
@@ -233,23 +246,23 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
     );
   }
 
-  Widget _buildDrawer(BuildContext context, ThemeData theme) {
+  Widget _buildDrawer(BuildContext context, ThemeData theme, List<Map<String, dynamic>> menuHierarchy) {
     return Drawer(
-      child: _buildSidebarContent(context, theme),
+      child: _buildSidebarContent(context, theme, menuHierarchy),
     );
   }
 
-  Widget _buildSidebar(BuildContext context, ThemeData theme) {
+  Widget _buildSidebar(BuildContext context, ThemeData theme, List<Map<String, dynamic>> menuHierarchy) {
     return Material(
       color: theme.colorScheme.surface,
       child: SizedBox(
         width: 260,
-        child: _buildSidebarContent(context, theme),
+        child: _buildSidebarContent(context, theme, menuHierarchy),
       ),
     );
   }
 
-  Widget _buildSidebarContent(BuildContext context, ThemeData theme) {
+  Widget _buildSidebarContent(BuildContext context, ThemeData theme, List<Map<String, dynamic>> menuHierarchy) {
     final currentPath = GoRouterState.of(context).uri.path;
 
     return Column(
@@ -259,7 +272,7 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             children: [
-              for (final group in _menuHierarchy)
+              for (final group in menuHierarchy)
                 _buildMenuGroup(context, theme, group['group'] as String, group['items'] as List<Map<String, dynamic>>, currentPath),
             ],
           ),

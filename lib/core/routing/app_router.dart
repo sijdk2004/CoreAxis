@@ -91,7 +91,18 @@ import '../../features/platform/presentation/user_role_assignment_screen.dart';
 import '../../features/platform/presentation/permission_groups_screen.dart';
 import '../../features/platform/presentation/permission_simulator_screen.dart';
 import '../../features/platform/presentation/access_policy_viewer_screen.dart';
+import '../../features/platform/presentation/workflow_dashboard_screen.dart';
+import '../../features/platform/presentation/workflow_list_screen.dart';
+import '../../features/platform/presentation/workflow_analytics_screen.dart';
+import '../../features/platform/presentation/approval_dashboard_screen.dart';
+import '../../features/platform/presentation/pending_approvals_screen.dart';
+import '../../features/platform/presentation/approval_rules_screen.dart';
+import '../../features/platform/presentation/workflow_settings_screen.dart';
+import '../../features/platform/presentation/workflow_designer_screen.dart';
+import '../../features/platform/presentation/workflow_detail_screen.dart';
 import '../../features/platform/presentation/workflow_engine_screen.dart';
+import '../../features/platform/presentation/workflow_template_library_screen.dart';
+import '../../features/platform/presentation/workflow_execution_screen.dart';
 import '../../features/platform/presentation/approval_engine_screen.dart';
 import '../../features/platform/presentation/platform_notifications_screen.dart';
 import '../../features/platform/presentation/documents_screen.dart';
@@ -195,6 +206,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/platform/rbac/permission-groups', builder: (context, state) => const PermissionGroupsScreen()),
           GoRoute(path: '/platform/rbac/simulator', builder: (context, state) => const PermissionSimulatorScreen()),
           GoRoute(path: '/platform/rbac/policies', builder: (context, state) => const AccessPolicyViewerScreen()),
+          GoRoute(path: '/platform/workflows', builder: (context, state) => const WorkflowDashboardScreen()),
+          GoRoute(path: '/platform/workflows/list', builder: (context, state) => const WorkflowListScreen()),
+          GoRoute(path: '/platform/workflows/designer', builder: (context, state) => const WorkflowDesignerScreen()),
+          GoRoute(path: '/platform/workflows/templates', builder: (context, state) => const WorkflowTemplateLibraryScreen()),
+          GoRoute(path: '/platform/workflows/executions', builder: (context, state) => const WorkflowExecutionScreen()),
+          GoRoute(path: '/platform/approvals', builder: (context, state) => const ApprovalDashboardScreen()),
+          GoRoute(path: '/platform/approvals/pending', builder: (context, state) => const PendingApprovalsScreen()),
+          GoRoute(path: '/platform/approvals/rules', builder: (context, state) => const ApprovalRulesScreen()),
+          GoRoute(path: '/platform/workflows/analytics', builder: (context, state) => const WorkflowAnalyticsDashboardScreen()),
+          GoRoute(path: '/platform/workflows/settings', builder: (context, state) => const WorkflowSettingsScreen()),
+          GoRoute(
+            path: '/platform/workflows/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id'] ?? 'w1';
+              return WorkflowDetailScreen(workflowId: id);
+            },
+          ),
           GoRoute(path: '/platform/users', builder: (context, state) => const PlatformUsersScreen()),
           GoRoute(path: '/platform/users/new', builder: (context, state) => const CreateUserScreen()),
           GoRoute(path: '/platform/users/invitations', builder: (context, state) => const UserInvitationsScreen()),
@@ -291,8 +319,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/platform/organizations', builder: (context, state) => const OrganizationsScreen()),
           GoRoute(path: '/platform/users', builder: (context, state) => const PlatformUsersScreen()),
           GoRoute(path: '/platform/roles', builder: (context, state) => const RolesPermissionsScreen()),
-          GoRoute(path: '/platform/workflows', builder: (context, state) => const WorkflowEngineScreen()),
-          GoRoute(path: '/platform/approvals', builder: (context, state) => const ApprovalEngineScreen()),
+          GoRoute(path: '/platform/workflows/engine', builder: (context, state) => const WorkflowEngineScreen()),
+          GoRoute(path: '/platform/workflows/approvals', builder: (context, state) => const ApprovalEngineScreen()),
           GoRoute(path: '/platform/notifications', builder: (context, state) => const PlatformNotificationsScreen()),
           GoRoute(path: '/platform/documents', builder: (context, state) => const DocumentsScreen()),
           GoRoute(path: '/platform/audit-logs', builder: (context, state) => const AuditLogsScreen()),
