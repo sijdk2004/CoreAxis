@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 
 import 'providers/workflow_detail_provider.dart';
 
@@ -75,11 +76,28 @@ class _WorkflowDetailScreenState extends ConsumerState<WorkflowDetailScreen> {
           // Breadcrumb
           Row(
             children: [
-              Text('Workflows', style: TextStyle(color: theme.colorScheme.primary, fontSize: 13)),
-              const Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: Text('/')),
-              Text('${detail.category}', style: TextStyle(color: theme.colorScheme.primary, fontSize: 13)),
-              const Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: Text('/')),
-              Text(detail.name, style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 13)),
+              InkWell(
+                onTap: () => context.go('/platform/workflows/list'),
+                borderRadius: BorderRadius.circular(4),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Text('Workflows', style: TextStyle(color: theme.colorScheme.primary, fontSize: 13, fontWeight: FontWeight.w500)),
+                ),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(horizontal: 4), child: Text('/', style: TextStyle(color: Colors.grey))),
+              InkWell(
+                onTap: () => context.go('/platform/workflows/list'),
+                borderRadius: BorderRadius.circular(4),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Text('${detail.category}', style: TextStyle(color: theme.colorScheme.primary, fontSize: 13, fontWeight: FontWeight.w500)),
+                ),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(horizontal: 4), child: Text('/', style: TextStyle(color: Colors.grey))),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Text(detail.name, style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 13, fontWeight: FontWeight.bold)),
+              ),
             ],
           ),
           const SizedBox(height: 20),

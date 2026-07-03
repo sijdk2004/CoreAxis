@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../data/bom_providers.dart';
+import '../data/bom_provider.dart';
 import '../domain/bom_model.dart';
 import '../../../core/utils/shared_dialogs.dart';
 
@@ -19,16 +19,23 @@ class _BomScreenState extends ConsumerState<BomScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final boms = ref.watch(bomsProvider).where((b) => 
-      b.productName.toLowerCase().contains(_searchQuery.toLowerCase()) || 
-      b.id.toLowerCase().contains(_searchQuery.toLowerCase())
-    ).toList();
+    final asyncBoms = ref.watch(bomProvider);
 
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header
+      body: asyncBoms.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (bomList) {
+          final boms = bomList.where((b) {
+            final pName = b.product?['name'] as String? ?? b.productId;
+            return pName.toLowerCase().contains(_searchQuery.toLowerCase()) || 
+                   b.id.toLowerCase().contains(_searchQuery.toLowerCase());
+          }).toList();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Row(
@@ -94,7 +101,9 @@ class _BomScreenState extends ConsumerState<BomScreen> {
               },
             ),
           ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
@@ -126,15 +135,15 @@ class _BomScreenState extends ConsumerState<BomScreen> {
                     children: [
                       Row(
                         children: [
-                          Text(bom.productName, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                          Text(bom.product?['name'] ?? bom.productId, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                           const SizedBox(width: 12),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.surfaceVariant,
+                              color: theme.colorScheme.surfaceContainerHighest,
                               borderRadius: BorderRadius.circular(4),
                             ),
-                            child: Text(bom.version, style: theme.textTheme.bodySmall),
+                            child: Text('v${bom.versionNumber}', style: theme.textTheme.bodySmall),
                           ),
                         ],
                       ),
@@ -172,7 +181,7 @@ class _BomScreenState extends ConsumerState<BomScreen> {
           ),
           children: [
             Container(
-              color: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,10 +194,10 @@ class _BomScreenState extends ConsumerState<BomScreen> {
                       children: [
                         Icon(LucideIcons.cornerDownRight, size: 16, color: theme.dividerColor),
                         const SizedBox(width: 12),
-                        Text(item.materialId, style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                        Text(item.componentId, style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(width: 16),
-                        Expanded(child: Text(item.materialName)),
-                        Text('${item.quantity} ${item.unit}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        Expanded(child: Text(item.component?['name'] ?? item.componentId)),
+                        Text('${item.quantity} ${item.uom?['code'] ?? item.uomId}', style: const TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                   )),

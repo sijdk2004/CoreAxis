@@ -6,7 +6,7 @@ import 'package:furniflow/core/network/api_constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MockSecureStorage extends SecureStorageService {
-  MockSecureStorage() : super(const FlutterSecureStorage());
+  MockSecureStorage() : super();
   
   bool shouldFailRefresh = false;
   int refreshCallCount = 0;

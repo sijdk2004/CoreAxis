@@ -120,16 +120,32 @@ class _DrillDownBarChartState extends State<DrillDownBarChart> {
                   Row(
                     children: [
                       for (int i = 0; i < _breadcrumbs.length; i++) ...[
-                        Text(
-                          _breadcrumbs[i],
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: i == _breadcrumbs.length - 1
-                                ? theme.colorScheme.primary
-                                : Colors.grey,
-                            fontWeight: i == _breadcrumbs.length - 1
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                        InkWell(
+                          onTap: () {
+                            if (i >= _breadcrumbs.length - 1) return;
+                            int pops = _breadcrumbs.length - 1 - i;
+                            setState(() {
+                              for (int p = 0; p < pops; p++) {
+                                _currentData = _history.removeLast();
+                                _breadcrumbs.removeLast();
+                              }
+                            });
+                          },
+                          borderRadius: BorderRadius.circular(4),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            child: Text(
+                              _breadcrumbs[i],
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: i == _breadcrumbs.length - 1
+                                    ? theme.colorScheme.primary
+                                    : Colors.grey,
+                                fontWeight: i == _breadcrumbs.length - 1
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
                           ),
                         ),
                         if (i < _breadcrumbs.length - 1)

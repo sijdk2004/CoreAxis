@@ -4,6 +4,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/gestures.dart';
 import 'core/theme/app_theme.dart';
 import 'core/routing/app_router.dart';
+import 'features/platform/presentation/providers/industry_scenario_provider.dart';
 
 class AppScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -40,12 +41,24 @@ class FurniFlowApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
     final themeMode = ref.watch(themeModeProvider);
+    final scenarioState = ref.watch(industryScenarioProvider);
+    
+    final activeColor = scenarioState.previewScenario?.primaryColor ?? scenarioState.activeScenario?.primaryColor;
+
+    ThemeData overrideTheme(ThemeData base) {
+      if (activeColor == null) return base;
+      return base.copyWith(
+        colorScheme: base.colorScheme.copyWith(
+          primary: activeColor,
+        ),
+      );
+    }
 
     return MaterialApp.router(
       title: 'CoreAxis ERP',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      theme: overrideTheme(AppTheme.lightTheme),
+      darkTheme: overrideTheme(AppTheme.darkTheme),
       themeMode: themeMode,
       scrollBehavior: AppScrollBehavior(),
       routerConfig: router,

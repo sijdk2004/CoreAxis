@@ -42,7 +42,7 @@ void main() {
   setUp(() {
     mockDio = MockDio();
     final authInterceptor = AuthInterceptor(
-      SecureStorageService(const FlutterSecureStorage()), 
+      SecureStorageService(), 
       mockDio, 
       onLogout: () {}
     );

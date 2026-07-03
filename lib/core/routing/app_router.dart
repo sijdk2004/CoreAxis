@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../features/production/presentation/production_tracking_screen.dart';
-import '../../features/production/presentation/production_board_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/shell/presentation/app_shell.dart';
@@ -20,6 +18,24 @@ import '../../features/customers/presentation/customer_form_screen.dart';
 import '../../features/customers/presentation/customer_view_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/settings/presentation/profile_screen.dart';
+import '../../features/platform/presentation/design_system_audit_screen.dart';
+import '../../features/platform/presentation/empty_state_library_screen.dart';
+import '../../features/platform/presentation/skeleton_loading_library_screen.dart';
+import '../../features/platform/presentation/feedback_center_screen.dart';
+import '../../features/platform/presentation/toast_playground_screen.dart';
+import '../../features/platform/presentation/keyboard_shortcut_center_screen.dart';
+import '../../features/platform/presentation/responsive_preview_center_screen.dart';
+import '../../features/platform/presentation/demo_mode_manager_screen.dart';
+import '../../features/platform/presentation/onboarding_screen.dart';
+import '../../features/platform/presentation/product_tour_launcher_screen.dart';
+import '../../features/platform/presentation/mock_tour_screen.dart';
+import '../../features/platform/presentation/motion_design_library_screen.dart';
+import '../../features/platform/presentation/accessibility_center_screen.dart';
+import '../../features/platform/presentation/help_center_screen.dart';
+import '../../features/platform/presentation/ux_preferences_screen.dart';
+import '../../features/platform/presentation/demo_story_screen.dart';
+import '../../features/platform/presentation/presentation_mode_screen.dart';
+import '../../features/platform/presentation/industry_scenario_switcher_screen.dart';
 import '../../features/settings/presentation/security_screen.dart';
 import '../../features/settings/presentation/about_screen.dart';
 import '../../features/rol/presentation/roles_screen.dart';
@@ -40,7 +56,6 @@ import '../../features/production/presentation/production_tracking_screen.dart';
 import '../../features/production/presentation/production_tracking_list_screen.dart';
 import '../../features/bom/presentation/bom_form_screen.dart';
 import '../../features/bom/presentation/bom_view_screen.dart';
-import '../../features/production/presentation/production_screen.dart';
 import '../../features/job_orders/presentation/job_orders_screen.dart';
 import '../../features/inventory/presentation/inventory_screen.dart';
 import '../../features/delivery/presentation/delivery_list_screen.dart';
@@ -58,6 +73,10 @@ import '../../features/auth/presentation/auth_provider.dart';
 // Placeholder for missing screens
 
 import '../../features/platform_shell/presentation/platform_shell.dart';
+import '../../features/platform/presentation/platform_home_screen.dart';
+import '../../features/platform/presentation/marketplace_screen.dart';
+import '../../features/platform/presentation/module_catalog_screen.dart';
+import '../../features/platform/presentation/workspace_manager_screen.dart';
 import '../../features/platform/presentation/organizations_screen.dart';
 import '../../features/platform/presentation/create_organization_screen.dart';
 import '../../features/platform/presentation/organization_detail_screen.dart';
@@ -73,7 +92,6 @@ import '../../features/platform/presentation/tenant_detail_screen.dart';
 import '../../features/platform/presentation/tenant_analytics_screen.dart';
 import '../../features/platform/presentation/tenant_settings_screen.dart';
 import '../../features/platform/presentation/subscription_screen.dart';
-import '../../features/platform/presentation/organizations_screen.dart';
 import '../../features/platform/presentation/platform_users_screen.dart';
 import '../../features/platform/presentation/create_user_screen.dart';
 import '../../features/platform/presentation/user_detail_screen.dart';
@@ -97,6 +115,37 @@ import '../../features/platform/presentation/workflow_analytics_screen.dart';
 import '../../features/platform/presentation/approval_dashboard_screen.dart';
 import '../../features/platform/presentation/pending_approvals_screen.dart';
 import '../../features/platform/presentation/approval_rules_screen.dart';
+import '../../features/platform/presentation/approval_history_screen.dart';
+import '../../features/platform/presentation/delegation_screen.dart';
+import '../../features/platform/presentation/approval_analytics_screen.dart';
+import '../../features/platform/presentation/notification_dashboard_screen.dart';
+import '../../features/platform/presentation/notification_center_screen.dart';
+import '../../features/platform/presentation/notification_template_screen.dart';
+import '../../features/platform/presentation/notification_template_editor_screen.dart';
+import '../../features/platform/presentation/notification_channel_screen.dart';
+import '../../features/platform/presentation/broadcast_center_screen.dart';
+import '../../features/platform/presentation/campaign_builder_screen.dart';
+import '../../features/platform/presentation/delivery_queue_screen.dart';
+import '../../features/platform/presentation/delivery_history_screen.dart';
+import '../../features/platform/presentation/notification_analytics_screen.dart';
+import '../../features/platform/presentation/document_dashboard_screen.dart';
+import '../../features/platform/presentation/document_repository_screen.dart';
+import '../../features/platform/presentation/document_category_screen.dart';
+import '../../features/platform/presentation/document_upload_screen.dart';
+import '../../features/platform/presentation/folder_management_screen.dart';
+import '../../features/platform/presentation/document_viewer_screen.dart';
+import '../../features/platform/presentation/audit_dashboard_screen.dart';
+import '../../features/platform/presentation/audit_explorer_screen.dart';
+import '../../features/platform/presentation/user_activity_audit_screen.dart';
+import '../../features/platform/presentation/security_events_audit_screen.dart';
+import '../../features/platform/presentation/data_history_screen.dart';
+import '../../features/platform/presentation/compliance_reports_screen.dart';
+import '../../features/platform/presentation/audit_analytics_screen.dart';
+import '../../features/platform/presentation/entity_timeline_screen.dart';
+import '../../features/platform/presentation/document_version_screen.dart';
+import '../../features/platform/presentation/document_sharing_screen.dart';
+import '../../features/platform/presentation/document_analytics_screen.dart';
+import '../../features/platform/presentation/approval_chain_designer_screen.dart';
 import '../../features/platform/presentation/workflow_settings_screen.dart';
 import '../../features/platform/presentation/workflow_designer_screen.dart';
 import '../../features/platform/presentation/workflow_detail_screen.dart';
@@ -108,11 +157,56 @@ import '../../features/platform/presentation/platform_notifications_screen.dart'
 import '../../features/platform/presentation/documents_screen.dart';
 import '../../features/platform/presentation/audit_logs_screen.dart';
 import '../../features/platform/presentation/platform_reports_screen.dart';
+import '../../features/platform/presentation/report_catalog_screen.dart';
+import '../../features/platform/presentation/report_builder_screen.dart';
+import '../../features/platform/presentation/saved_reports_screen.dart';
+import '../../features/platform/presentation/scheduled_reports_screen.dart';
+import '../../features/platform/presentation/report_templates_screen.dart';
+import '../../features/platform/presentation/report_sharing_screen.dart';
+import '../../features/platform/presentation/data_explorer_screen.dart';
+import '../../features/platform/presentation/kpi_designer_screen.dart';
+import '../../features/platform/presentation/report_analytics_dashboard_screen.dart';
+import '../../features/platform/presentation/export_center_screen.dart';
+import '../../features/platform/presentation/dashboard_builder_screen.dart';
 import '../../features/platform/presentation/ai_assistant_screen.dart';
+import '../../features/platform/presentation/ai_executive_dashboard_screen.dart';
+import '../../features/platform/presentation/ai_copilot_screen.dart';
+import '../../features/platform/presentation/platform_settings_screen.dart';
+import '../../features/platform/presentation/industry_pack_launcher_screen.dart';
+import '../../features/platform/presentation/installed_industry_packs_screen.dart';
+import '../../features/platform/presentation/industry_pack_details_screen.dart';
+import '../../features/platform/presentation/module_enablement_screen.dart';
+import '../../features/platform/presentation/industry_branding_screen.dart';
+import '../../features/platform/presentation/industry_dashboard_screen.dart';
+import '../../features/platform/presentation/industry_settings_screen.dart';
+import '../../features/platform/presentation/industry_pack_configuration_screen.dart';
+import '../../features/platform/presentation/navigation_builder_screen.dart';
+import '../../features/platform/presentation/system_status_screen.dart';
+import '../../features/platform/presentation/ai_insights_center_screen.dart';
+import '../../features/platform/presentation/ai_predictions_dashboard_screen.dart';
+import '../../features/platform/presentation/ai_workflow_assistant_screen.dart';
+import '../../features/platform/presentation/ai_report_generator_screen.dart';
+import '../../features/platform/presentation/ai_knowledge_hub_screen.dart';
+import '../../features/platform/presentation/ai_prompt_library_screen.dart';
+import '../../features/platform/presentation/ai_automation_studio_screen.dart';
+import '../../features/platform/presentation/ai_agents_management_screen.dart';
+import '../../features/platform/presentation/ai_model_center_screen.dart';
+import '../../features/platform/presentation/ai_settings_screen.dart';
 import '../../features/platform/presentation/furni_flow_pack_screen.dart';
 import '../../features/platform/presentation/steel_flow_pack_screen.dart';
 import '../../features/platform/presentation/garment_flow_pack_screen.dart';
 import '../../features/platform/presentation/kitchen_flow_pack_screen.dart';
+import '../../features/platform/presentation/kpi_generator_screen.dart';
+import '../../features/platform/presentation/demo_data_generator_screen.dart';
+import '../../features/platform/presentation/ai_demo_scenarios_screen.dart';
+import '../../features/platform/presentation/executive_dashboard_screen.dart';
+import '../../features/platform/presentation/roadmap_screen.dart';
+import '../../features/platform/presentation/whats_new_screen.dart';
+import '../../features/platform/presentation/feature_discovery_screen.dart';
+import '../../features/platform/presentation/release_showcase_screen.dart';
+import '../../features/platform/presentation/demo_reset_center_screen.dart';
+import '../../features/platform/presentation/business_journey_screen.dart';
+import '../../features/platform/presentation/live_activity_simulation_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -173,13 +267,78 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/',
         redirect: (context, state) => '/dashboard',
       ),
+      GoRoute(
+        path: '/platform/demo/presentation',
+        builder: (context, state) => const PresentationModeScreen(),
+      ),
       ShellRoute(
         navigatorKey: _platformShellNavigatorKey,
         builder: (context, state, child) {
           return PlatformShell(child: child);
         },
         routes: [
+          GoRoute(path: '/platform/home', builder: (context, state) => const PlatformHomeScreen()),
+          GoRoute(path: '/platform/roadmap', builder: (context, state) => const RoadmapScreen()),
+          GoRoute(path: '/platform/whats-new', builder: (context, state) => const WhatsNewScreen()),
+          GoRoute(path: '/platform/discovery', builder: (context, state) => const FeatureDiscoveryScreen()),
+          GoRoute(path: '/platform/release-showcase', builder: (context, state) => const ReleaseShowcaseScreen()),
+          GoRoute(path: '/platform/marketplace', builder: (context, state) => const MarketplaceScreen()),
+          GoRoute(path: '/platform/modules', builder: (context, state) => const ModuleCatalogScreen()),
+          GoRoute(path: '/platform/workspaces', builder: (context, state) => const WorkspaceManagerScreen()),
+          GoRoute(path: '/platform/settings', builder: (context, state) => const PlatformSettingsScreen()),
+          GoRoute(path: '/platform/design-system', builder: (context, state) => const DesignSystemAuditScreen()),
+          GoRoute(path: '/platform/ux/empty-states', builder: (context, state) => const EmptyStateLibraryScreen()),
+          GoRoute(path: '/platform/ux/loading', builder: (context, state) => const SkeletonLoadingLibraryScreen()),
+          GoRoute(path: '/platform/ux/feedback', builder: (context, state) => const FeedbackCenterScreen()),
+          GoRoute(path: '/platform/ux/toast', builder: (context, state) => const ToastPlaygroundScreen()),
+          GoRoute(path: '/platform/ux/motion', builder: (context, state) => const MotionDesignLibraryScreen()),
+          GoRoute(path: '/platform/accessibility', builder: (context, state) => const AccessibilityCenterScreen()),
+          GoRoute(path: '/platform/help', builder: (context, state) => const HelpCenterScreen()),
+          GoRoute(path: '/platform/preferences', builder: (context, state) => const UxPreferencesScreen()),
+          GoRoute(path: '/platform/demo/scenarios', builder: (context, state) => const IndustryScenarioSwitcherScreen()),
+          GoRoute(path: '/platform/demo/business-flow', builder: (context, state) => const BusinessJourneyScreen()),
+          GoRoute(path: '/platform/demo/data', builder: (context, state) => const DemoDataGeneratorScreen()),
+          GoRoute(path: '/platform/demo/ai', builder: (context, state) => const AiDemoScenariosScreen()),
+          GoRoute(path: '/platform/demo/executive', builder: (context, state) => const ExecutiveDashboardScreen()),
+          GoRoute(path: '/platform/demo/kpis', builder: (context, state) => const KpiGeneratorScreen()),
+          GoRoute(path: '/platform/demo/activity', builder: (context, state) => const LiveActivitySimulationScreen()),
+          GoRoute(path: '/platform/demo/reset', builder: (context, state) => const DemoResetCenterScreen()),
+          GoRoute(path: '/platform/demo/story-mode', builder: (context, state) => const DemoStoryScreen()),
+          GoRoute(path: '/platform/responsive', builder: (context, state) => const ResponsivePreviewCenterScreen()),
+          GoRoute(path: '/platform/shortcuts', builder: (context, state) => const KeyboardShortcutCenterScreen()),
+          GoRoute(path: '/platform/demo-mode', builder: (context, state) => const DemoModeManagerScreen()),
+          GoRoute(path: '/platform/onboarding', builder: (context, state) => const OnboardingScreen()),
+          GoRoute(path: '/platform/tours', builder: (context, state) => const ProductTourLauncherScreen()),
+          GoRoute(path: '/platform/tours/:id', builder: (context, state) => MockTourScreen(tourId: state.pathParameters['id']!)),
+          GoRoute(path: '/platform/industry-packs', builder: (context, state) => const IndustryPackLauncherScreen()),
+          GoRoute(path: '/platform/industry-packs/installed', builder: (context, state) => const InstalledIndustryPacksScreen()),
+          GoRoute(
+            path: '/platform/industry-packs/:id', 
+            builder: (context, state) => IndustryPackDetailsScreen(packId: state.pathParameters['id']!),
+          ),
+          GoRoute(
+            path: '/platform/industry-packs/:id/modules', 
+            builder: (context, state) => ModuleEnablementScreen(packId: state.pathParameters['id']!),
+          ),
+          GoRoute(
+            path: '/platform/industry-packs/:id/branding',
+            builder: (context, state) => IndustryBrandingScreen(packId: state.pathParameters['id']!),
+          ),
+          GoRoute(
+            path: '/platform/industry-packs/:id/dashboard',
+            builder: (context, state) => IndustryDashboardScreen(packId: state.pathParameters['id']!),
+          ),
+          GoRoute(
+            path: '/platform/industry-packs/:id/settings',
+            builder: (context, state) => IndustrySettingsScreen(packId: state.pathParameters['id']!),
+          ),
+          GoRoute(
+            path: '/platform/industry-packs/:id/configuration',
+            builder: (context, state) => IndustryPackConfigurationScreen(packId: state.pathParameters['id']!),
+          ),
+          GoRoute(path: '/platform/navigation-builder', builder: (context, state) => const NavigationBuilderScreen()),
           GoRoute(path: '/platform/dashboard', builder: (context, state) => const PlatformDashboardScreen()),
+          GoRoute(path: '/platform/system-status', builder: (context, state) => const SystemStatusScreen()),
           GoRoute(path: '/platform/dashboard/operations', builder: (context, state) => const OperationsDashboardScreen()),
           GoRoute(path: '/platform/dashboard/ai-insights', builder: (context, state) => const AiInsightsDashboardScreen()),
           GoRoute(path: '/platform/tenants', builder: (context, state) => const TenantsScreen()),
@@ -214,6 +373,32 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/platform/approvals', builder: (context, state) => const ApprovalDashboardScreen()),
           GoRoute(path: '/platform/approvals/pending', builder: (context, state) => const PendingApprovalsScreen()),
           GoRoute(path: '/platform/approvals/rules', builder: (context, state) => const ApprovalRulesScreen()),
+          GoRoute(path: '/platform/approvals/delegations', builder: (context, state) => const DelegationScreen()),
+          GoRoute(path: '/platform/approvals/history', builder: (context, state) => const ApprovalHistoryScreen()),
+          GoRoute(path: '/platform/approvals/analytics', builder: (context, state) => const ApprovalAnalyticsScreen()),
+          GoRoute(path: '/platform/notifications', builder: (context, state) => const NotificationDashboardScreen()),
+          GoRoute(path: '/platform/notifications/center', builder: (context, state) => const NotificationCenterScreen()),
+          GoRoute(path: '/platform/notifications/templates', builder: (context, state) => const NotificationTemplateScreen()),
+          GoRoute(
+            path: '/platform/notifications/templates/editor/:id', 
+            builder: (context, state) => NotificationTemplateEditorScreen(templateId: state.pathParameters['id']!),
+          ),
+          GoRoute(path: '/platform/notifications/channels', builder: (context, state) => const NotificationChannelScreen()),
+          GoRoute(path: '/platform/notifications/broadcast', builder: (context, state) => const BroadcastCenterScreen()),
+          GoRoute(path: '/platform/notifications/broadcast/new', builder: (context, state) => const CampaignBuilderScreen()),
+          GoRoute(path: '/platform/notifications/queue', builder: (context, state) => const DeliveryQueueScreen()),
+          GoRoute(path: '/platform/notifications/history', builder: (context, state) => const DeliveryHistoryScreen()),
+          GoRoute(path: '/platform/notifications/analytics', builder: (context, state) => const NotificationAnalyticsScreen()),
+          GoRoute(path: '/platform/documents', builder: (context, state) => const DocumentDashboardScreen()),
+          GoRoute(path: '/platform/documents/analytics', builder: (context, state) => const DocumentAnalyticsScreen()),
+          GoRoute(path: '/platform/documents/repository', builder: (context, state) => const DocumentRepositoryScreen()),
+          GoRoute(path: '/platform/documents/categories', builder: (context, state) => const DocumentCategoryScreen()),
+          GoRoute(path: '/platform/documents/upload', builder: (context, state) => const DocumentUploadScreen()),
+          GoRoute(path: '/platform/documents/folders', builder: (context, state) => const FolderManagementScreen()),
+          GoRoute(path: '/platform/documents/:id/sharing', builder: (context, state) => DocumentSharingScreen(documentId: state.pathParameters['id']!)),
+          GoRoute(path: '/platform/documents/:id/versions', builder: (context, state) => DocumentVersionScreen(documentId: state.pathParameters['id']!)),
+          GoRoute(path: '/platform/documents/:id', builder: (context, state) => DocumentViewerScreen(documentId: state.pathParameters['id']!)),
+          GoRoute(path: '/platform/approvals/chains', builder: (context, state) => const ApprovalChainDesignerScreen()),
           GoRoute(path: '/platform/workflows/analytics', builder: (context, state) => const WorkflowAnalyticsDashboardScreen()),
           GoRoute(path: '/platform/workflows/settings', builder: (context, state) => const WorkflowSettingsScreen()),
           GoRoute(
@@ -323,9 +508,40 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(path: '/platform/workflows/approvals', builder: (context, state) => const ApprovalEngineScreen()),
           GoRoute(path: '/platform/notifications', builder: (context, state) => const PlatformNotificationsScreen()),
           GoRoute(path: '/platform/documents', builder: (context, state) => const DocumentsScreen()),
+          GoRoute(path: '/platform/audit', builder: (context, state) => const AuditDashboardScreen()),
+          GoRoute(path: '/platform/audit/explorer', builder: (context, state) => const AuditExplorerScreen()),
+          GoRoute(path: '/platform/audit/users', builder: (context, state) => const UserActivityAuditScreen()),
+          GoRoute(path: '/platform/audit/security', builder: (context, state) => const SecurityEventsAuditScreen()),
+          GoRoute(path: '/platform/audit/data-history', builder: (context, state) => const DataHistoryScreen()),
+          GoRoute(path: '/platform/audit/compliance', builder: (context, state) => const ComplianceReportsScreen()),
+          GoRoute(path: '/platform/audit/analytics', builder: (context, state) => const AuditAnalyticsScreen()),
+          GoRoute(path: '/platform/audit/entity/:id', builder: (context, state) => EntityTimelineScreen(entityId: state.pathParameters['id'] ?? '')),
           GoRoute(path: '/platform/audit-logs', builder: (context, state) => const AuditLogsScreen()),
           GoRoute(path: '/platform/reports', builder: (context, state) => const PlatformReportsScreen()),
-          GoRoute(path: '/platform/ai', builder: (context, state) => const AiAssistantScreen()),
+          GoRoute(path: '/platform/reports/saved', builder: (context, state) => const SavedReportsScreen()),
+          GoRoute(path: '/platform/reports/schedules', builder: (context, state) => const ScheduledReportsScreen()),
+          GoRoute(path: '/platform/reports/templates', builder: (context, state) => const ReportTemplatesScreen()),
+          GoRoute(path: '/platform/reports/sharing', builder: (context, state) => const ReportSharingScreen()),
+          GoRoute(path: '/platform/reports/data-explorer', builder: (context, state) => const DataExplorerScreen()),
+          GoRoute(path: '/platform/reports/kpis', builder: (context, state) => const KpiDesignerScreen()),
+          GoRoute(path: '/platform/reports/analytics', builder: (context, state) => const ReportAnalyticsDashboardScreen()),
+          GoRoute(path: '/platform/reports/export-center', builder: (context, state) => const ExportCenterScreen()),
+          GoRoute(path: '/platform/reports/catalog', builder: (context, state) => const ReportCatalogScreen()),
+          GoRoute(path: '/platform/reports/builder', builder: (context, state) => const ReportBuilderScreen()),
+          GoRoute(path: '/platform/reports/dashboard-builder', builder: (context, state) => const DashboardBuilderScreen()),
+          GoRoute(path: '/platform/ai', builder: (context, state) => const AiExecutiveDashboardScreen()),
+          GoRoute(path: '/platform/ai/chat', builder: (context, state) => const AiAssistantScreen()),
+          GoRoute(path: '/platform/ai/copilot', builder: (context, state) => const AiCopilotScreen()),
+          GoRoute(path: '/platform/ai/insights', builder: (context, state) => const AiInsightsCenterScreen()),
+          GoRoute(path: '/platform/ai/predictions', builder: (context, state) => const AiPredictionsDashboardScreen()),
+          GoRoute(path: '/platform/ai/workflows', builder: (context, state) => const AiWorkflowAssistantScreen()),
+          GoRoute(path: '/platform/ai/reports', builder: (context, state) => const AIReportGeneratorScreen()),
+          GoRoute(path: '/platform/ai/knowledge', builder: (context, state) => const AiKnowledgeHubScreen()),
+          GoRoute(path: '/platform/ai/prompts', builder: (context, state) => const AiPromptLibraryScreen()),
+          GoRoute(path: '/platform/ai/automation', builder: (context, state) => const AiAutomationStudioScreen()),
+          GoRoute(path: '/platform/ai/agents', builder: (context, state) => const AiAgentsManagementScreen()),
+          GoRoute(path: '/platform/ai/models', builder: (context, state) => const AiModelCenterScreen()),
+          GoRoute(path: '/platform/ai/settings', builder: (context, state) => const AiSettingsScreen()),
           GoRoute(path: '/platform/pack/furniflow', builder: (context, state) => const FurniFlowPackScreen()),
           GoRoute(path: '/platform/pack/steelflow', builder: (context, state) => const SteelFlowPackScreen()),
           GoRoute(path: '/platform/pack/garmentflow', builder: (context, state) => const GarmentFlowPackScreen()),
@@ -358,6 +574,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             name: 'delivery_dashboard',
             builder: (context, state) => const DeliveryDashboardScreen(),
           ),
+
           GoRoute(
             path: '/reports',
             builder: (context, state) => const ReportsScreen(),
@@ -398,6 +615,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: '/customers',
             builder: (context, state) => const CustomersScreen(),
             routes: [
+
               GoRoute(
                 path: 'create',
                 builder: (context, state) => const CustomerFormScreen(),

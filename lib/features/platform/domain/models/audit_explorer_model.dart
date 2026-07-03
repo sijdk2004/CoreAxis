@@ -1,0 +1,162 @@
+class AuditExplorerItem {
+  final String id;
+  final String timestamp;
+  final String user;
+  final String module;
+  final String entity;
+  final String action;
+  final String organization;
+  final String tenant;
+  final String ipAddress;
+  final String device;
+  final String severity; // info, warning, critical, error
+
+  const AuditExplorerItem({
+    required this.id,
+    required this.timestamp,
+    required this.user,
+    required this.module,
+    required this.entity,
+    required this.action,
+    required this.organization,
+    required this.tenant,
+    required this.ipAddress,
+    required this.device,
+    required this.severity,
+  });
+}
+
+List<AuditExplorerItem> generateMockAuditExplorerItems() {
+  return [
+    const AuditExplorerItem(
+      id: 'AUD-9021',
+      timestamp: '2023-10-27 14:32:45',
+      user: 'john.doe',
+      module: 'Documents',
+      entity: 'Financial_Report_Q3.pdf',
+      action: 'Update Permissions',
+      organization: 'Acme Corp',
+      tenant: 'US-East',
+      ipAddress: '192.168.1.105',
+      device: 'Windows PC / Chrome',
+      severity: 'info',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9022',
+      timestamp: '2023-10-27 14:28:10',
+      user: 'jane.smith',
+      module: 'RBAC',
+      entity: 'Role: Admin',
+      action: 'Assigned to john.doe',
+      organization: 'Acme Corp',
+      tenant: 'US-East',
+      ipAddress: '10.0.0.52',
+      device: 'MacBook Pro / Safari',
+      severity: 'warning',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9023',
+      timestamp: '2023-10-27 13:15:00',
+      user: 'system_admin',
+      module: 'Tenants',
+      entity: 'EU-West',
+      action: 'Tenant Suspended',
+      organization: 'GlobalTech',
+      tenant: 'EU-West',
+      ipAddress: '203.0.113.42',
+      device: 'Linux / Firefox',
+      severity: 'critical',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9024',
+      timestamp: '2023-10-27 11:45:22',
+      user: 'sarah.c',
+      module: 'Workflows',
+      entity: 'WF-EmployeeOnboarding',
+      action: 'Execution Failed',
+      organization: 'TechFlow',
+      tenant: 'EU-West',
+      ipAddress: '192.168.1.18',
+      device: 'Windows PC / Edge',
+      severity: 'error',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9025',
+      timestamp: '2023-10-27 10:30:05',
+      user: 'mike.t',
+      module: 'Furniture ERP',
+      entity: 'Inventory Item 402',
+      action: 'Stock Adjusted',
+      organization: 'FurniCo',
+      tenant: 'US-West',
+      ipAddress: '192.168.1.88',
+      device: 'iPad / Safari',
+      severity: 'info',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9026',
+      timestamp: '2023-10-26 18:22:11',
+      user: 'unknown',
+      module: 'Auth',
+      entity: 'System Login',
+      action: 'Multiple Failed Attempts',
+      organization: 'Acme Corp',
+      tenant: 'US-East',
+      ipAddress: '185.15.22.10',
+      device: 'Unknown Device',
+      severity: 'critical',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9027',
+      timestamp: '2023-10-26 15:10:00',
+      user: 'admin.sys',
+      module: 'Organizations',
+      entity: 'Startup Inc',
+      action: 'Organization Created',
+      organization: 'System',
+      tenant: 'Global',
+      ipAddress: '10.0.1.20',
+      device: 'MacBook Pro / Chrome',
+      severity: 'info',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9028',
+      timestamp: '2023-10-26 14:05:33',
+      user: 'john.doe',
+      module: 'Approvals',
+      entity: 'Leave Request',
+      action: 'Approved',
+      organization: 'Acme Corp',
+      tenant: 'US-East',
+      ipAddress: '192.168.1.105',
+      device: 'Windows PC / Chrome',
+      severity: 'info',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9029',
+      timestamp: '2023-10-25 09:12:44',
+      user: 'jane.smith',
+      module: 'Notifications',
+      entity: 'Email Gateway',
+      action: 'Configuration Changed',
+      organization: 'Acme Corp',
+      tenant: 'US-East',
+      ipAddress: '10.0.0.52',
+      device: 'MacBook Pro / Safari',
+      severity: 'warning',
+    ),
+    const AuditExplorerItem(
+      id: 'AUD-9030',
+      timestamp: '2023-10-24 16:45:00',
+      user: 'system',
+      module: 'Database',
+      entity: 'Main Cluster',
+      action: 'Backup Failed',
+      organization: 'System',
+      tenant: 'Global',
+      ipAddress: 'Internal',
+      device: 'Server',
+      severity: 'error',
+    ),
+  ];
+}

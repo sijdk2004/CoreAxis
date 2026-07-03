@@ -5,8 +5,10 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../main.dart';
 import '../../notifications/presentation/notification_drawer.dart';
-import '../../ai_assistant/presentation/ai_assistant_panel.dart';
 import '../../auth/presentation/auth_provider.dart';
+import 'global_search_dialog.dart';
+import 'package:flutter/services.dart';
+import 'widgets/industry_context_switcher.dart';
 
 class PlatformShell extends ConsumerStatefulWidget {
   final Widget child;
@@ -22,8 +24,31 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
   Widget? _currentEndDrawer;
   
   final Map<String, bool> _expandedGroups = {};
+  bool _isCommandPaletteOpen = false;
 
+  @override
+  void initState() {
+    super.initState();
+    HardwareKeyboard.instance.addHandler(_handleKeyEvent);
+  }
 
+  @override
+  void dispose() {
+    HardwareKeyboard.instance.removeHandler(_handleKeyEvent);
+    super.dispose();
+  }
+
+  bool _handleKeyEvent(KeyEvent event) {
+    if (event is KeyDownEvent) {
+      if (event.logicalKey == LogicalKeyboardKey.keyK &&
+          (HardwareKeyboard.instance.isControlPressed || HardwareKeyboard.instance.isMetaPressed)) {
+        
+        _showGlobalSearchDialog(context);
+        return true; // Return true to mark as handled and prevent browser default
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +57,57 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
 
     final _menuHierarchy = [
       {
-        'group': 'Main',
+        'group': 'Core Platform',
         'items': [
+          {'title': 'Platform Home', 'icon': LucideIcons.home, 'route': '/platform/home'},
+          {'title': 'Product Roadmap', 'icon': LucideIcons.map, 'route': '/platform/roadmap'},
+          {'title': 'What\'s New', 'icon': LucideIcons.sparkles, 'route': '/platform/whats-new'},
+          {'title': 'Release Showcase', 'icon': LucideIcons.star, 'route': '/platform/release-showcase'},
           {'title': 'Dashboard', 'icon': LucideIcons.layoutDashboard, 'route': '/platform/dashboard'},
-          {'title': 'Operations', 'icon': LucideIcons.activity, 'route': '/platform/dashboard/operations'},
+          {'title': 'Workspace Manager', 'icon': LucideIcons.layoutTemplate, 'route': '/platform/workspaces'},
+          {'title': 'Module Catalog', 'icon': LucideIcons.grid, 'route': '/platform/modules'},
+          {'title': 'System Status', 'icon': LucideIcons.activity, 'route': '/platform/system-status'},
+        ]
+      },
+      {
+        'group': 'Onboarding & Support',
+        'items': [
+          {'title': 'First Time Onboarding', 'icon': LucideIcons.partyPopper, 'route': '/platform/onboarding'},
+          {'title': 'Feature Discovery', 'icon': LucideIcons.compass, 'route': '/platform/discovery'},
+          {'title': 'Guided Tours', 'icon': LucideIcons.mousePointerClick, 'route': '/platform/tours'},
+          {'title': 'Demo Mode Manager', 'icon': LucideIcons.presentation, 'route': '/platform/demo-mode'},
+          {'title': 'Demo Reset Center', 'icon': LucideIcons.refreshCw, 'route': '/platform/demo/reset'},
+          {'title': 'Demo Story Mode', 'icon': LucideIcons.bookOpen, 'route': '/platform/demo/story-mode'},
+          {'title': 'Demo Data Generator', 'icon': LucideIcons.databaseZap, 'route': '/platform/demo/data'},
+          {'title': 'Executive Dashboard', 'icon': LucideIcons.pieChart, 'route': '/platform/demo/executive'},
+          {'title': 'AI Scenarios', 'icon': LucideIcons.bot, 'route': '/platform/demo/ai'},
+          {'title': 'Presentation Mode', 'icon': LucideIcons.monitorPlay, 'route': '/platform/demo/presentation'},
+          {'title': 'Guided Journey', 'icon': LucideIcons.map, 'route': '/platform/demo/business-flow'},
+          {'title': 'Scenario Switcher', 'icon': LucideIcons.factory, 'route': '/platform/demo/scenarios'},
+          {'title': 'Live KPI Generator', 'icon': LucideIcons.activity, 'route': '/platform/demo/kpis'},
+          {'title': 'Live Activity Sim', 'icon': LucideIcons.radioReceiver, 'route': '/platform/demo/activity'},
+          {'title': 'Help Center', 'icon': LucideIcons.helpCircle, 'route': '/platform/help'},
+          {'title': 'Keyboard Shortcuts', 'icon': LucideIcons.keyboard, 'route': '/platform/shortcuts'},
+        ]
+      },
+      {
+        'group': 'User Experience',
+        'items': [
+          {'title': 'UX Preferences', 'icon': LucideIcons.slidersHorizontal, 'route': '/platform/preferences'},
+          {'title': 'Accessibility Center', 'icon': LucideIcons.accessibility, 'route': '/platform/accessibility'},
+          {'title': 'Design System Audit', 'icon': LucideIcons.palette, 'route': '/platform/design-system'},
+          {'title': 'Global Feedback Center', 'icon': LucideIcons.messageSquareHeart, 'route': '/platform/ux/feedback'},
+          {'title': 'Responsive Preview', 'icon': LucideIcons.monitorSmartphone, 'route': '/platform/responsive'},
+          {'title': 'Empty State Library', 'icon': LucideIcons.boxSelect, 'route': '/platform/ux/empty-states'},
+          {'title': 'Skeleton Loading Library', 'icon': LucideIcons.loader, 'route': '/platform/ux/loading'},
+          {'title': 'Toast Notifications', 'icon': LucideIcons.bellRing, 'route': '/platform/ux/toast'},
+          {'title': 'Motion Design Library', 'icon': LucideIcons.clapperboard, 'route': '/platform/ux/motion'},
+        ]
+      },
+      {
+        'group': 'Configuration',
+        'items': [
+          {'title': 'Settings Center', 'icon': LucideIcons.settings, 'route': '/platform/settings'},
         ]
       },
       {
@@ -54,7 +126,19 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
         ]
       },
       {
-        'group': 'Workflow & Automation',
+        'group': 'Document Engine',
+        'items': [
+          {'title': 'Dashboard', 'icon': LucideIcons.fileSearch, 'route': '/platform/documents'},
+          {'title': 'Analytics', 'icon': LucideIcons.pieChart, 'route': '/platform/documents/analytics'},
+          {'title': 'Repository', 'icon': LucideIcons.folderKanban, 'route': '/platform/documents/repository'},
+          {'title': 'Categories', 'icon': LucideIcons.tags, 'route': '/platform/documents/categories'},
+          {'title': 'Upload Center', 'icon': LucideIcons.uploadCloud, 'route': '/platform/documents/upload'},
+          {'title': 'Folder Management', 'icon': LucideIcons.folderCog, 'route': '/platform/documents/folders'},
+          {'title': 'Sharing & Permissions', 'icon': LucideIcons.share2, 'route': '/platform/documents/DOC-1234/sharing'},
+        ]
+      },
+      {
+        'group': 'Workflow Automation',
         'items': [
           {'title': 'Workflows Dashboard', 'icon': LucideIcons.workflow, 'route': '/platform/workflows'},
           {'title': 'Analytics Dashboard', 'icon': LucideIcons.barChart2, 'route': '/platform/workflows/analytics'},
@@ -63,6 +147,20 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
           {'title': 'Templates', 'icon': LucideIcons.copy, 'route': '/platform/workflows/templates'},
           {'title': 'Execution History', 'icon': LucideIcons.history, 'route': '/platform/workflows/executions'},
           {'title': 'Settings', 'icon': LucideIcons.settings, 'route': '/platform/workflows/settings'},
+          {'title': 'Rules Engine', 'icon': LucideIcons.settings, 'route': '/platform/workflows/rules'},
+        ]
+      },
+      {
+        'group': 'Notification Engine',
+        'items': [
+          {'title': 'Dashboard', 'icon': LucideIcons.barChart2, 'route': '/platform/notifications'},
+          {'title': 'Notification Center', 'icon': LucideIcons.bell, 'route': '/platform/notifications/center'},
+          {'title': 'Templates', 'icon': LucideIcons.fileCode, 'route': '/platform/notifications/templates'},
+          {'title': 'Channels', 'icon': LucideIcons.radio, 'route': '/platform/notifications/channels'},
+          {'title': 'Broadcast Center', 'icon': LucideIcons.send, 'route': '/platform/notifications/broadcast'},
+          {'title': 'Delivery Queue', 'icon': LucideIcons.list, 'route': '/platform/notifications/queue'},
+          {'title': 'Delivery History', 'icon': LucideIcons.history, 'route': '/platform/notifications/history'},
+          {'title': 'Analytics Dashboard', 'icon': LucideIcons.barChart2, 'route': '/platform/notifications/analytics'},
         ]
       },
       {
@@ -71,8 +169,24 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
           {'title': 'Dashboard', 'icon': LucideIcons.checkSquare, 'route': '/platform/approvals'},
           {'title': 'Pending Approvals', 'icon': LucideIcons.clock, 'route': '/platform/approvals/pending'},
           {'title': 'Approval Rules', 'icon': LucideIcons.checkCircle, 'route': '/platform/approvals/rules'},
+          {'title': 'Delegations', 'icon': LucideIcons.users, 'route': '/platform/approvals/delegations'},
+          {'title': 'Approval Chains', 'icon': LucideIcons.gitCommit, 'route': '/platform/approvals/chains'},
+          {'title': 'Approval History', 'icon': LucideIcons.history, 'route': '/platform/approvals/history'},
+          {'title': 'Analytics', 'icon': LucideIcons.barChart2, 'route': '/platform/approvals/analytics'},
         ]
       },
+      {
+          'group': 'Audit Engine',
+          'items': [
+            {'title': 'Dashboard', 'icon': LucideIcons.shieldCheck, 'route': '/platform/audit'},
+            {'title': 'Analytics', 'icon': LucideIcons.barChart2, 'route': '/platform/audit/analytics'},
+            {'title': 'Explorer', 'icon': LucideIcons.search, 'route': '/platform/audit/explorer'},
+            {'title': 'User Activity', 'icon': LucideIcons.users, 'route': '/platform/audit/users'},
+            {'title': 'Security Events', 'icon': LucideIcons.shieldAlert, 'route': '/platform/audit/security'},
+            {'title': 'Data History', 'icon': LucideIcons.history, 'route': '/platform/audit/data-history'},
+            {'title': 'Compliance Reports', 'icon': LucideIcons.fileSignature, 'route': '/platform/audit/compliance'},
+          ]
+        },
       {
         'group': 'Content & Documents',
         'items': [
@@ -84,13 +198,43 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
         'group': 'Analytics',
         'items': [
           {'title': 'Reports', 'icon': LucideIcons.pieChart, 'route': '/platform/reports'},
-          {'title': 'AI Insights', 'icon': LucideIcons.brain, 'route': '/platform/dashboard/ai-insights'},
-          {'title': 'AI Assistant', 'icon': LucideIcons.sparkles, 'route': '/platform/ai'},
+          {'title': 'Saved Reports', 'icon': LucideIcons.bookmark, 'route': '/platform/reports/saved'},
+          {'title': 'Scheduled Reports', 'icon': LucideIcons.calendarClock, 'route': '/platform/reports/schedules'},
+          {'title': 'Report Templates', 'icon': LucideIcons.layoutTemplate, 'route': '/platform/reports/templates'},
+          {'title': 'Report Sharing', 'icon': LucideIcons.share2, 'route': '/platform/reports/sharing'},
+          {'title': 'Data Explorer', 'icon': LucideIcons.compass, 'route': '/platform/reports/data-explorer'},
+          {'title': 'KPI Designer', 'icon': LucideIcons.activity, 'route': '/platform/reports/kpis'},
+          {'title': 'Report Analytics', 'icon': LucideIcons.barChart2, 'route': '/platform/reports/analytics'},
+          {'title': 'Export Center', 'icon': LucideIcons.downloadCloud, 'route': '/platform/reports/export-center'},
+          {'title': 'Report Catalog', 'icon': LucideIcons.library, 'route': '/platform/reports/catalog'},
+          {'title': 'Report Builder', 'icon': LucideIcons.penTool, 'route': '/platform/reports/builder'},
+          {'title': 'Dashboard Builder', 'icon': LucideIcons.layoutDashboard, 'route': '/platform/reports/dashboard-builder'},
+        ]
+      },
+      {
+        'group': 'Intelligence Engine',
+        'items': [
+          {'title': 'AI Dashboard', 'icon': LucideIcons.layoutDashboard, 'route': '/platform/ai'},
+          {'title': 'AI Insights', 'icon': LucideIcons.brain, 'route': '/platform/ai/insights'},
+          {'title': 'AI Predictions', 'icon': LucideIcons.trendingUp, 'route': '/platform/ai/predictions'},
+          {'title': 'AI Copilot', 'icon': LucideIcons.sparkles, 'route': '/platform/ai/copilot'},
+          {'title': 'AI Workflow Assistant', 'icon': LucideIcons.bot, 'route': '/platform/ai/workflows'},
+          {'title': 'AI Report Generator', 'icon': LucideIcons.fileText, 'route': '/platform/ai/reports'},
+          {'title': 'AI Knowledge Hub', 'icon': LucideIcons.bookOpen, 'route': '/platform/ai/knowledge'},
+          {'title': 'AI Prompt Library', 'icon': LucideIcons.terminal, 'route': '/platform/ai/prompts'},
+          {'title': 'AI Automation Studio', 'icon': LucideIcons.workflow, 'route': '/platform/ai/automation'},
+          {'title': 'AI Agents Management', 'icon': LucideIcons.users, 'route': '/platform/ai/agents'},
+          {'title': 'AI Model Center', 'icon': LucideIcons.cpu, 'route': '/platform/ai/models'},
+          {'title': 'AI Settings', 'icon': LucideIcons.settings, 'route': '/platform/ai/settings'},
         ]
       },
       {
         'group': 'Industry Packs',
         'items': [
+          {'title': 'Launcher', 'icon': LucideIcons.layoutGrid, 'route': '/platform/industry-packs'},
+          {'title': 'Installed Packs', 'icon': LucideIcons.packageCheck, 'route': '/platform/industry-packs/installed'},
+          {'title': 'Navigation Builder', 'icon': LucideIcons.network, 'route': '/platform/navigation-builder'},
+          {'title': 'Marketplace', 'icon': LucideIcons.store, 'route': '/platform/marketplace'},
           {'title': 'FurniFlow', 'icon': LucideIcons.sofa, 'route': '/platform/pack/furniflow'},
           {'title': 'SteelFlow', 'icon': LucideIcons.anvil, 'route': '/platform/pack/steelflow'},
           {'title': 'GarmentFlow', 'icon': LucideIcons.shirt, 'route': '/platform/pack/garmentflow'},
@@ -142,15 +286,7 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
           children: [
             Row(
               children: [
-                Icon(LucideIcons.boxes, color: theme.colorScheme.primary),
-                const SizedBox(width: 12),
-                Text(
-                  'CoreAxis ERP',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
+                const IndustryContextSwitcher(),
               ],
             ),
             const SizedBox(width: 48),
@@ -160,7 +296,7 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
                 constraints: const BoxConstraints(maxWidth: 500),
                 child: TextField(
                   readOnly: true,
-                  onTap: () => _showCommandPaletteDialog(context),
+                  onTap: () => _showGlobalSearchDialog(context),
                   decoration: InputDecoration(
                     hintText: 'Search platform (Cmd+K)...',
                     prefixIcon: const Icon(LucideIcons.search, size: 20),
@@ -225,19 +361,41 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
       ),
       child: Row(
         children: [
-          Icon(LucideIcons.home, size: 16, color: theme.colorScheme.onSurfaceVariant),
-          const SizedBox(width: 8),
-          Text('Platform', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          InkWell(
+            onTap: () => context.go('/platform/home'),
+            borderRadius: BorderRadius.circular(4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(LucideIcons.home, size: 16, color: theme.colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Text('Platform', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w500)),
+                ],
+              ),
+            ),
+          ),
           for (var i = 0; i < segments.length; i++) ...[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Icon(LucideIcons.chevronRight, size: 16, color: theme.colorScheme.onSurfaceVariant),
             ),
-            Text(
-              segments[i].replaceAll('-', ' ').toUpperCase(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: i == segments.length - 1 ? FontWeight.bold : FontWeight.normal,
-                color: i == segments.length - 1 ? theme.colorScheme.onSurface : theme.colorScheme.onSurfaceVariant,
+            InkWell(
+              onTap: () {
+                final route = '/platform/${segments.sublist(0, i + 1).join('/')}';
+                context.go(route);
+              },
+              borderRadius: BorderRadius.circular(4),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                child: Text(
+                  segments[i].replaceAll('-', ' ').toUpperCase(),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: i == segments.length - 1 ? FontWeight.bold : FontWeight.w500,
+                    color: i == segments.length - 1 ? theme.colorScheme.onSurface : theme.colorScheme.primary,
+                  ),
+                ),
               ),
             ),
           ],
@@ -389,94 +547,17 @@ class _PlatformShellState extends ConsumerState<PlatformShell> {
     );
   }
 
-  void _showCommandPaletteDialog(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
+  void _showGlobalSearchDialog(BuildContext context) {
+    if (_isCommandPaletteOpen) return;
+    _isCommandPaletteOpen = true;
+    
     showDialog(
       context: context,
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.only(top: 100, left: 16, right: 16),
-        alignment: Alignment.topCenter,
-        child: Container(
-          width: 600,
-          constraints: const BoxConstraints(maxHeight: 500),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: isDark ? Colors.white10 : Colors.grey.shade300),
-            boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: 40, spreadRadius: 10),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: 'Search tenants, users, workflows...',
-                    prefixIcon: const Icon(LucideIcons.search, size: 24),
-                    border: InputBorder.none,
-                    isDense: true,
-                    hintStyle: TextStyle(fontSize: 18, color: Colors.grey.shade500),
-                  ),
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ),
-              const Divider(height: 1),
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  children: [
-                    _buildCommandSection('QUICK ACTIONS', theme),
-                    _buildCommandItem(LucideIcons.building, 'Create New Tenant', 'Administration', theme, context),
-                    _buildCommandItem(LucideIcons.users, 'Invite New User', 'Administration', theme, context),
-                    
-                    _buildCommandSection('RECENT', theme),
-                    _buildCommandItem(LucideIcons.gitMerge, 'Purchase Order Approval Flow', 'Workflow', theme, context),
-                    
-                    _buildCommandSection('SUGGESTED', theme),
-                    _buildCommandItem(LucideIcons.pieChart, 'Platform Usage Analytics', 'Report', theme, context),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCommandSection(String title, ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 8),
-      child: Text(
-        title,
-        style: theme.textTheme.labelSmall?.copyWith(
-          color: theme.colorScheme.onSurface.withOpacity(0.5),
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.2,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCommandItem(IconData icon, String title, String subtitle, ThemeData theme, BuildContext context, {bool isHighlight = false}) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-      leading: Icon(icon, color: isHighlight ? theme.colorScheme.primary : theme.iconTheme.color?.withOpacity(0.7)),
-      title: Text(title, style: TextStyle(fontWeight: isHighlight ? FontWeight.bold : FontWeight.w500, color: isHighlight ? theme.colorScheme.primary : theme.colorScheme.onSurface)),
-      trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(color: theme.colorScheme.onSurface.withOpacity(0.05), borderRadius: BorderRadius.circular(4)),
-        child: Text(subtitle, style: TextStyle(fontSize: 11, color: theme.colorScheme.onSurface.withOpacity(0.6))),
-      ),
-      hoverColor: theme.colorScheme.primary.withOpacity(0.05),
-      onTap: () => Navigator.pop(context),
-    );
+      builder: (context) => const GlobalSearchDialog(),
+    ).then((_) {
+      if (mounted) {
+        _isCommandPaletteOpen = false;
+      }
+    });
   }
 }
