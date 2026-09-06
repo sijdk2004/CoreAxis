@@ -42,7 +42,7 @@ class CommandPaletteNotifier extends Notifier<CommandPaletteState> {
     return const CommandPaletteState(
       allCommands: [
         // Recent
-        CommandItem(id: 'rec-1', title: 'Go to Dashboard', subtitle: 'Platform Analytics', icon: LucideIcons.layoutDashboard, group: CommandGroup.recent, route: '/platform/dashboard'),
+        CommandItem(id: 'rec-1', title: 'Go to Home', subtitle: 'Platform Core', icon: LucideIcons.home, group: CommandGroup.recent, route: '/platform/home'),
         CommandItem(id: 'rec-2', title: 'Generate Report', subtitle: 'Create a new analytics report', icon: LucideIcons.pieChart, group: CommandGroup.recent, actionType: 'report'),
         
         // Favorites
@@ -50,7 +50,7 @@ class CommandPaletteNotifier extends Notifier<CommandPaletteState> {
         CommandItem(id: 'fav-2', title: 'Create Workflow', subtitle: 'Design business process', icon: LucideIcons.workflow, group: CommandGroup.favorites, actionType: 'workflow'),
         
         // Navigation
-        CommandItem(id: 'nav-1', title: 'Go to Dashboard', icon: LucideIcons.layoutDashboard, group: CommandGroup.navigation, route: '/platform/dashboard'),
+        CommandItem(id: 'nav-1', title: 'Go to Home', icon: LucideIcons.home, group: CommandGroup.navigation, route: '/platform/home'),
         CommandItem(id: 'nav-2', title: 'Open Users', icon: LucideIcons.users, group: CommandGroup.navigation, route: '/platform/users'),
         CommandItem(id: 'nav-3', title: 'Open AI', icon: LucideIcons.bot, group: CommandGroup.navigation, route: '/platform/ai'),
         CommandItem(id: 'nav-4', title: 'View Documents', icon: LucideIcons.fileText, group: CommandGroup.navigation, route: '/platform/documents'),

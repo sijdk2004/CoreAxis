@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dio/dio.dart';
-import 'package:furniflow/core/network/api_client.dart';
-import 'package:furniflow/core/network/exceptions/network_exceptions.dart';
-import 'package:furniflow/core/network/interceptors/auth_interceptor.dart';
-import 'package:furniflow/core/network/interceptors/error_interceptor.dart';
-import 'package:furniflow/core/local_storage/secure_storage_service.dart';
+import 'package:coreaxis/core/network/api_client.dart';
+import 'package:coreaxis/core/network/exceptions/network_exceptions.dart';
+import 'package:coreaxis/core/network/interceptors/auth_interceptor.dart';
+import 'package:coreaxis/core/network/interceptors/error_interceptor.dart';
+import 'package:coreaxis/core/local_storage/secure_storage_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MockDio extends Fake implements Dio {

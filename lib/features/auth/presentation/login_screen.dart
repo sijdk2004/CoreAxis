@@ -65,7 +65,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
         if (mounted) {
           if (_selectedApp == ApplicationType.coreAxis) {
-            context.go('/platform/dashboard');
+            context.go('/platform/home');
           } else {
             context.go('/dashboard');
           }

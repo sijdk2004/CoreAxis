@@ -68,7 +68,7 @@ class ContextSwitcherNotifier extends Notifier<ContextSwitcherState> {
       
       // Navigate to dashboard if it's an industry pack, otherwise platform home
       if (newItem.id == 'erp_core') {
-        context.go('/platform/dashboard');
+        context.go('/platform/home');
       } else {
         context.go('/platform/industry-packs/${newItem.id}/dashboard');
       }
